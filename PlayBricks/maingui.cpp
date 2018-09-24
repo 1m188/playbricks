@@ -19,6 +19,7 @@ MainGui::MainGui(QWidget *parent)
 	rect.moveCenter(QApplication::desktop()->availableGeometry().center());
 	move(rect.topLeft());
 
+	//ÓÎÏ·³¡¾°
 	GameScene *gameScene = new GameScene(this);
 	gameScene->setFixedSize(size());
 }

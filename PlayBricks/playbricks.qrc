@@ -1,4 +1,9 @@
 <RCC>
-    <qresource prefix="PlayBricks">
+    <qresource prefix="/PlayBricks">
+        <file>Resources/ball.png</file>
+        <file>Resources/block_blue.png</file>
+        <file>Resources/block_green.png</file>
+        <file>Resources/block_red.png</file>
+        <file>Resources/paddle.png</file>
     </qresource>
 </RCC>

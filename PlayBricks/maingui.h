@@ -4,10 +4,7 @@
 #include <QWidget>
 #include "QPixmap"
 #include "QLabel"
-
-#ifdef _DEBUG
-#include "QDebug"
-#endif // _DEBUG
+#include "QTimer"
 
 
 //游戏主界面
@@ -32,10 +29,22 @@ private:
 	QLabel *paddleLabel;
 	QVector<QVector<QLabel *>> blockLabelVector; //砖块二维数组
 
-	bool isStart; //游戏是否开始
+	//挡板移动定时器
+	QTimer paddleMoveLeftTimer; //左
+	QTimer paddleMoveRightTimer; //右
+	QTimer ballMoveTimer; //球移动定时器
+
+	int ballMoveDx;
+	int ballMoveDy;
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件
+	void keyReleaseEvent(QKeyEvent *event) override; //...释放按键...
+
+	private slots:
+	void paddleMoveLeftSlot(); //挡板向左移动信号槽
+	void paddleMoveRightSlot(); //...右...
+	void ballMoveSlot(); //球移动
 };
 
 #endif // MAINGUI_H

@@ -19,9 +19,6 @@ MainGui::MainGui(QWidget *parent)
 	rect.moveCenter(QApplication::desktop()->availableGeometry().center());
 	move(rect.topLeft());
 
-	//游戏相关初始化
-	isStart = false; //游戏还未开始
-
 	//图片初始化
 	ballPixmap.load(":/PlayBricks/Resources/ball.png");
 	paddlePixmap.load(":/PlayBricks/Resources/paddle.png");
@@ -54,6 +51,20 @@ MainGui::MainGui(QWidget *parent)
 			blockLabelVector[blockLabelVector.size() - 1].append(blockLabel);
 		}
 	}
+
+	//挡板移动定时器初始化
+	paddleMoveLeftTimer.setInterval(10);
+	paddleMoveRightTimer.setInterval(10);
+	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &MainGui::paddleMoveLeftSlot);
+	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &MainGui::paddleMoveRightSlot);
+
+	//球移动计时器
+	ballMoveTimer.setInterval(20);
+	connect(&ballMoveTimer, &QTimer::timeout, this, &MainGui::ballMoveSlot);
+
+	//球移动距离
+	ballMoveDx = 5;
+	ballMoveDy = 5;
 }
 
 MainGui::~MainGui()
@@ -63,7 +74,91 @@ MainGui::~MainGui()
 
 void MainGui::keyPressEvent(QKeyEvent * event)
 {
-#ifdef _DEBUG
-	qDebug() << event->key();
-#endif // _DEBUG
+	if (event->key() == Qt::Key_Left) //挡板向左移动
+	{
+		//只允许向左的定时器工作
+		paddleMoveLeftTimer.start();
+		paddleMoveRightTimer.stop();
+	}
+	else if (event->key() == Qt::Key_Right)
+	{
+		paddleMoveRightTimer.start();
+		paddleMoveLeftTimer.stop();
+	}
+}
+
+void MainGui::keyReleaseEvent(QKeyEvent * event)
+{
+	//释放按键则停止挡板移动
+	if (event->key() == Qt::Key_Left)
+	{
+		paddleMoveLeftTimer.stop();
+	}
+	else if (event->key() == Qt::Key_Right)
+	{
+		paddleMoveRightTimer.stop();
+	}
+	//球开始移动
+	else if (event->key() == Qt::Key_Space)
+	{
+		ballMoveTimer.start();
+	}
+}
+
+void MainGui::paddleMoveLeftSlot()
+{
+	int x = paddleLabel->x(); //获取当前的x坐标
+	x -= 5; //移动
+	if (x < 0) //判定向左移动是否会超出边界
+	{
+		paddleLabel->move(0, paddleLabel->y());
+	}
+	else
+	{
+		paddleLabel->move(x, paddleLabel->y());
+	}
+}
+
+void MainGui::paddleMoveRightSlot()
+{
+	int x = paddleLabel->x(); //获取当前的x坐标
+	x += 5; //移动
+	if (x + paddleLabel->width() > width()) //判定向左移动是否会超出边界
+	{
+		paddleLabel->move(width() - paddleLabel->width(), paddleLabel->y());
+	}
+	else
+	{
+		paddleLabel->move(x, paddleLabel->y());
+	}
+}
+
+void MainGui::ballMoveSlot()
+{
+	//更新球坐标
+	int x = ballLabel->x() + ballMoveDx;
+	int y = ballLabel->y() + ballMoveDy;
+	//如果球超出边界，则把球限制在边界之内，同时改变速度方向
+	if (x + ballLabel->width() > width())
+	{
+		x = width() - ballLabel->width();
+		ballMoveDx *= -1;
+	}
+	if (x < 0)
+	{
+		x = 0;
+		ballMoveDx *= -1;
+	}
+	if (y + ballLabel->height() > height())
+	{
+		y = height() - ballLabel->height();
+		ballMoveDy *= -1;
+	}
+	if (y < 0)
+	{
+		y = 0;
+		ballMoveDy *= -1;
+	}
+	//刷新球的位置
+	ballLabel->move(x, y);
 }

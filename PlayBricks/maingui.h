@@ -24,9 +24,8 @@ private:
 	QPixmap block_greenPixmap;
 	QPixmap block_redPixmap;
 
-	//一些游戏元素的标签
-	QLabel *ballLabel;
-	QLabel *paddleLabel;
+	QLabel *ballLabel; //球
+	QLabel *paddleLabel; //挡板
 	QVector<QVector<QLabel *>> blockLabelVector; //砖块二维数组
 
 	//挡板移动定时器
@@ -34,8 +33,8 @@ private:
 	QTimer paddleMoveRightTimer; //右
 	QTimer ballMoveTimer; //球移动定时器
 
-	int ballMoveDx;
-	int ballMoveDy;
+	int ballMoveDx; //球每次在x方向移动的距离
+	int ballMoveDy; //球每次在y方向移动的距离
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件

@@ -2,6 +2,7 @@
 #include "QApplication"
 #include "QDeskTopWidget"
 #include "QKeyEvent"
+#include "Director.h"
 
 MainGui::MainGui(QWidget *parent)
 	: QWidget(parent)
@@ -19,6 +20,7 @@ MainGui::MainGui(QWidget *parent)
 	rect.moveCenter(QApplication::desktop()->availableGeometry().center());
 	move(rect.topLeft());
 
+	//游戏元素初始化
 	//图片初始化
 	ballPixmap.load(":/PlayBricks/Resources/ball.png");
 	paddlePixmap.load(":/PlayBricks/Resources/paddle.png");
@@ -138,6 +140,7 @@ void MainGui::ballMoveSlot()
 	//更新球坐标
 	int x = ballLabel->x() + ballMoveDx;
 	int y = ballLabel->y() + ballMoveDy;
+
 	//如果球超出边界，则把球限制在边界之内，同时改变速度方向
 	if (x + ballLabel->width() > width())
 	{
@@ -161,4 +164,26 @@ void MainGui::ballMoveSlot()
 	}
 	//刷新球的位置
 	ballLabel->move(x, y);
+
+	//判断球是否和挡板相撞
+	if (Director::getInstance()->isCrash(ballLabel, paddleLabel))
+	{
+		ballMoveDy *= -1;
+	}
+
+	//判断是否撞到了砖块
+	for (int i = 0; i < blockLabelVector.size(); i++)
+	{
+		for (int j = 0; j < blockLabelVector[i].size(); j++)
+		{
+			if (Director::getInstance()->isCrash(ballLabel, blockLabelVector[i][j]))
+			{
+				ballMoveDy *= -1;
+				blockLabelVector[i][j]->deleteLater();
+				blockLabelVector[i].removeAt(j);
+				goto outside;
+			}
+		}
+	}
+outside:;
 }

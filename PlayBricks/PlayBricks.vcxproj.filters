@@ -24,6 +24,9 @@
     <Filter Include="主界面">
       <UniqueIdentifier>{9ca6e499-0c07-4f91-af0a-5444d5acde45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="导演">
+      <UniqueIdentifier>{5f5a18bc-388f-444f-8d64-8b6952caebb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_playbricks.cpp">
@@ -39,6 +42,9 @@
     <ClCompile Include="maingui.cpp">
       <Filter>主界面</Filter>
     </ClCompile>
+    <ClCompile Include="Director.cpp">
+      <Filter>导演</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="playbricks.qrc">
@@ -47,5 +53,10 @@
     <CustomBuild Include="maingui.h">
       <Filter>主界面</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Director.h">
+      <Filter>导演</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

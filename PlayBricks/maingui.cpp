@@ -2,6 +2,7 @@
 #include "QApplication"
 #include "QDeskTopWidget"
 #include "QKeyEvent"
+#include "QMessageBox"
 #include "Director.h"
 
 MainGui::MainGui(QWidget *parent)
@@ -176,14 +177,39 @@ void MainGui::ballMoveSlot()
 	{
 		for (int j = 0; j < blockLabelVector[i].size(); j++)
 		{
-			if (Director::getInstance()->isCrash(ballLabel, blockLabelVector[i][j]))
+			if (Director::getInstance()->isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
 			{
 				ballMoveDy *= -1;
-				blockLabelVector[i][j]->deleteLater();
-				blockLabelVector[i].removeAt(j);
+				blockLabelVector[i][j]->hide();
 				goto outside;
 			}
 		}
 	}
 outside:;
+
+	//判断是否游戏结束
+	if (ballLabel->y() + ballLabel->height() >= height())
+	{
+		//停止一切
+		paddleMoveLeftTimer.stop();
+		paddleMoveRightTimer.stop();
+		ballMoveTimer.stop();
+		//显示信息
+		QMessageBox::about(this, u8"游戏结束", u8"游戏结束啦！");
+
+		//重新摆放挡板位置
+		paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
+		//重新摆放球的位置并重新设定球的移动方向
+		ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
+		ballMoveDx = 5;
+		ballMoveDy = 5;
+		//重新显示所有的砖块
+		for (int i = 0; i < blockLabelVector.size(); i++)
+		{
+			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			{
+				blockLabelVector[i][j]->show();
+			}
+		}
+	}
 }

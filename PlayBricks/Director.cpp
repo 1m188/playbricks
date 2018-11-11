@@ -22,7 +22,12 @@ Director * Director::getInstance()
 	return instance;
 }
 
-bool Director::isCrash(QLabel * l1, QLabel * l2)
+void Director::setWindow(Window * window)
 {
-	return l1->x() >= l2->x() - l1->width() && l1->x() <= l2->x() + l2->width() && l1->y() >= l2->y() - l1->height() && l1->y() <= l2->y() + l2->height();
+	this->window = window;
+}
+
+Window * Director::getWindow()
+{
+	return window;
 }

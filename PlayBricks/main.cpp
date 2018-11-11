@@ -1,10 +1,10 @@
 #include <QtWidgets/QApplication>
-#include "maingui.h"
+#include "Director.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	MainGui *mainGui = new MainGui(nullptr);
-	mainGui->show();
+	Director::getInstance()->setWindow(new Window());
+	Director::getInstance()->getWindow()->show();
 	return a.exec();
 }

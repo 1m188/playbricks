@@ -3,7 +3,6 @@
 #include "QDeskTopWidget"
 #include "QKeyEvent"
 #include "QMessageBox"
-#include "Director.h"
 
 MainGui::MainGui(QWidget *parent)
 	: QWidget(parent)
@@ -167,7 +166,7 @@ void MainGui::ballMoveSlot()
 	ballLabel->move(x, y);
 
 	//ÅÐ¶ÏÇòÊÇ·ñºÍµ²°åÏà×²
-	if (Director::getInstance()->isCrash(ballLabel, paddleLabel))
+	if (isCrash(ballLabel, paddleLabel))
 	{
 		ballMoveDy *= -1;
 	}
@@ -177,7 +176,7 @@ void MainGui::ballMoveSlot()
 	{
 		for (int j = 0; j < blockLabelVector[i].size(); j++)
 		{
-			if (Director::getInstance()->isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
+			if (isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
 			{
 				ballMoveDy *= -1;
 				blockLabelVector[i][j]->hide();
@@ -212,4 +211,9 @@ outside:;
 			}
 		}
 	}
+}
+
+bool MainGui::isCrash(QLabel * l1, QLabel * l2)
+{
+	return l1->x() >= l2->x() - l1->width() && l1->x() <= l2->x() + l2->width() && l1->y() >= l2->y() - l1->height() && l1->y() <= l2->y() + l2->height();
 }

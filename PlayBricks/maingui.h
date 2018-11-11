@@ -6,7 +6,6 @@
 #include "QLabel"
 #include "QTimer"
 
-
 //游戏主界面
 class MainGui : public QWidget
 {
@@ -35,6 +34,8 @@ private:
 
 	int ballMoveDx; //球每次在x方向移动的距离
 	int ballMoveDy; //球每次在y方向移动的距离
+
+	bool isCrash(QLabel *l1, QLabel *l2); //是否碰撞
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件

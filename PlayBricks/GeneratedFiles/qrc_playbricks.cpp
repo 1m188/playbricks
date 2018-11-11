@@ -1100,16 +1100,16 @@ bool qUnregisterResourceData(int, const unsigned char *, const unsigned char *, 
 }
 #endif
 
-int QT_RCC_MANGLE_NAMESPACE(qInitResources_playbricks)();
-int QT_RCC_MANGLE_NAMESPACE(qInitResources_playbricks)()
+int QT_RCC_MANGLE_NAMESPACE(qInitResources_PlayBricks)();
+int QT_RCC_MANGLE_NAMESPACE(qInitResources_PlayBricks)()
 {
     QT_RCC_PREPEND_NAMESPACE(qRegisterResourceData)
         (0x2, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
-int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_playbricks)();
-int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_playbricks)()
+int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_PlayBricks)();
+int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_PlayBricks)()
 {
     QT_RCC_PREPEND_NAMESPACE(qUnregisterResourceData)
        (0x2, qt_resource_struct, qt_resource_name, qt_resource_data);
@@ -1118,7 +1118,7 @@ int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_playbricks)()
 
 namespace {
    struct initializer {
-       initializer() { QT_RCC_MANGLE_NAMESPACE(qInitResources_playbricks)(); }
-       ~initializer() { QT_RCC_MANGLE_NAMESPACE(qCleanupResources_playbricks)(); }
+       initializer() { QT_RCC_MANGLE_NAMESPACE(qInitResources_PlayBricks)(); }
+       ~initializer() { QT_RCC_MANGLE_NAMESPACE(qCleanupResources_PlayBricks)(); }
    } dummy;
 }

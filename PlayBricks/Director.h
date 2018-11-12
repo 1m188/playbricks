@@ -1,7 +1,7 @@
 #ifndef DIRECTOR_H
 #define DIRECTOR_H
 
-#include "Window.h"
+#include "Scene.h"
 
 //导演类
 class Director
@@ -11,7 +11,8 @@ private:
 
 	static Director *instance; //单例模式的唯一性指针
 
-	Window *window; //游戏窗口指针实例
+	Window *window = nullptr; //游戏窗口指针实例
+	Scene *nowScene = nullptr; //当前受响应场景
 
 public:
 	Director(const Director &) = delete;
@@ -22,6 +23,8 @@ public:
 
 	void setWindow(Window *window); //设置游戏窗口实例
 	Window *getWindow(); //获取游戏窗口实例
+	void setNowScene(Scene *nowScene); //设置当前受响应场景
+	Scene *getNowScene(); //获取当前受响应场景
 };
 
 #endif // !DIRECTOR_H

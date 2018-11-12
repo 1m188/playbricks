@@ -11,6 +11,10 @@ class Window : public QWidget
 public:
 	Window();
 	~Window();
+
+protected:
+	void keyPressEvent(QKeyEvent *event) override;
+	void keyReleaseEvent(QKeyEvent *event) override;
 };
 
 #endif // WINDOW_H

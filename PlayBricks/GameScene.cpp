@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include "Director.h"
+#include "StartScene.h"
 #include "QApplication"
 #include "QDeskTopWidget"
 #include "QKeyEvent"
@@ -185,21 +187,31 @@ outside:;
 		paddleMoveLeftTimer.stop();
 		paddleMoveRightTimer.stop();
 		ballMoveTimer.stop();
-		//显示信息
-		QMessageBox::about(this, u8"游戏结束", u8"游戏结束啦！");
-
-		//重新摆放挡板位置
-		paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
-		//重新摆放球的位置并重新设定球的移动方向
-		ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-		ballMoveDx = 5;
-		ballMoveDy = 5;
-		//重新显示所有的砖块
-		for (int i = 0; i < blockLabelVector.size(); i++)
+		//显示游戏结束信息，如果不再来一局的话
+		if (QMessageBox::information(this, tr(u8"游戏结束"), tr(u8"游戏结束，是否以当前难度再来一局？"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 		{
-			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			StartScene *startScene = new StartScene(Director::getInstance()->getWindow());
+			Director::getInstance()->setNowScene(startScene);
+			startScene->init();
+			startScene->show();
+			deleteLater();
+		}
+		//否则重新再来一局，重新初始化所有游戏元素内容
+		else
+		{
+			//重新摆放挡板位置
+			paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
+			//重新摆放球的位置并重新设定球的移动方向
+			ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
+			ballMoveDx = 5;
+			ballMoveDy = 5;
+			//重新显示所有的砖块
+			for (int i = 0; i < blockLabelVector.size(); i++)
 			{
-				blockLabelVector[i][j]->show();
+				for (int j = 0; j < blockLabelVector[i].size(); j++)
+				{
+					blockLabelVector[i][j]->show();
+				}
 			}
 		}
 	}

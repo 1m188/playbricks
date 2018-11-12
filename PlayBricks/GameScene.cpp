@@ -1,25 +1,22 @@
-#include "maingui.h"
+#include "GameScene.h"
 #include "QApplication"
 #include "QDeskTopWidget"
 #include "QKeyEvent"
 #include "QMessageBox"
 
-MainGui::MainGui(QWidget *parent)
-	: QWidget(parent)
+GameScene::GameScene(Window *parent)
+	: Scene(parent)
 {
-	//界面基本设置
-	setAttribute(Qt::WA_DeleteOnClose, true);
-	setAttribute(Qt::WA_QuitOnClose, true);
 
-	//标题和大小
-	setWindowTitle(tr(u8"打砖块"));
-	setFixedSize(1000, 800);
+}
 
-	//移动到屏幕中央
-	QRect rect = frameGeometry();
-	rect.moveCenter(QApplication::desktop()->availableGeometry().center());
-	move(rect.topLeft());
+GameScene::~GameScene()
+{
 
+}
+
+void GameScene::init()
+{
 	//游戏元素初始化
 	//图片初始化
 	ballPixmap.load(":/PlayBricks/Resources/ball.png");
@@ -57,24 +54,19 @@ MainGui::MainGui(QWidget *parent)
 	//挡板移动定时器初始化
 	paddleMoveLeftTimer.setInterval(10);
 	paddleMoveRightTimer.setInterval(10);
-	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &MainGui::paddleMoveLeftSlot);
-	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &MainGui::paddleMoveRightSlot);
+	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &GameScene::paddleMoveLeftSlot);
+	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &GameScene::paddleMoveRightSlot);
 
 	//球移动计时器
 	ballMoveTimer.setInterval(20);
-	connect(&ballMoveTimer, &QTimer::timeout, this, &MainGui::ballMoveSlot);
+	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
 
 	//球移动距离
 	ballMoveDx = 5;
 	ballMoveDy = 5;
 }
 
-MainGui::~MainGui()
-{
-
-}
-
-void MainGui::keyPressEvent(QKeyEvent * event)
+void GameScene::keyPressEvent(QKeyEvent * event)
 {
 	if (event->key() == Qt::Key_Left) //挡板向左移动
 	{
@@ -89,7 +81,7 @@ void MainGui::keyPressEvent(QKeyEvent * event)
 	}
 }
 
-void MainGui::keyReleaseEvent(QKeyEvent * event)
+void GameScene::keyReleaseEvent(QKeyEvent * event)
 {
 	//释放按键则停止挡板移动
 	if (event->key() == Qt::Key_Left)
@@ -107,7 +99,7 @@ void MainGui::keyReleaseEvent(QKeyEvent * event)
 	}
 }
 
-void MainGui::paddleMoveLeftSlot()
+void GameScene::paddleMoveLeftSlot()
 {
 	int x = paddleLabel->x(); //获取当前的x坐标
 	x -= 5; //移动
@@ -121,7 +113,7 @@ void MainGui::paddleMoveLeftSlot()
 	}
 }
 
-void MainGui::paddleMoveRightSlot()
+void GameScene::paddleMoveRightSlot()
 {
 	int x = paddleLabel->x(); //获取当前的x坐标
 	x += 5; //移动
@@ -135,7 +127,7 @@ void MainGui::paddleMoveRightSlot()
 	}
 }
 
-void MainGui::ballMoveSlot()
+void GameScene::ballMoveSlot()
 {
 	//更新球坐标
 	int x = ballLabel->x() + ballMoveDx;
@@ -213,7 +205,7 @@ outside:;
 	}
 }
 
-bool MainGui::isCrash(QLabel * l1, QLabel * l2)
+bool GameScene::isCrash(QLabel * l1, QLabel * l2)
 {
 	return l1->x() >= l2->x() - l1->width() && l1->x() <= l2->x() + l2->width() && l1->y() >= l2->y() - l1->height() && l1->y() <= l2->y() + l2->height();
 }

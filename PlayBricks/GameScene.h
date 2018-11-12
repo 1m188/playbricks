@@ -1,19 +1,15 @@
-#ifndef MAINGUI_H
-#define MAINGUI_H
+#ifndef GAMESCENE_H
+#define GAMESCENE_H
 
-#include <QWidget>
+#include "Scene.h"
 #include "QPixmap"
 #include "QLabel"
 #include "QTimer"
 
-//游戏主界面
-class MainGui : public QWidget
+//游戏主场景
+class GameScene : public Scene
 {
 	Q_OBJECT
-
-public:
-	MainGui(QWidget *parent);
-	~MainGui();
 
 private:
 	//一系列资源图片
@@ -37,6 +33,12 @@ private:
 
 	bool isCrash(QLabel *l1, QLabel *l2); //是否碰撞
 
+public:
+	GameScene(Window *parent);
+	~GameScene();
+
+	void init() override;
+
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件
 	void keyReleaseEvent(QKeyEvent *event) override; //...释放按键...
@@ -47,4 +49,4 @@ protected:
 	void ballMoveSlot(); //球移动
 };
 
-#endif // MAINGUI_H
+#endif // GAMESCENE_H

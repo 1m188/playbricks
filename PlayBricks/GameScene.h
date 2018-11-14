@@ -30,6 +30,7 @@ private:
 
 	int ballMoveDx; //球每次在x方向移动的距离
 	int ballMoveDy; //球每次在y方向移动的距离
+	int paddleMoveDx; //挡板在横向方向每次移动的距离
 
 	bool isCrash(QLabel *l1, QLabel *l2); //是否碰撞
 
@@ -37,7 +38,7 @@ public:
 	GameScene(Window *parent);
 	~GameScene();
 
-	void init(int difficulty); //初始化，传入难度
+	void init(int difficulty); //初始化，传入难度，目前有0，1，2三个阶位
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件

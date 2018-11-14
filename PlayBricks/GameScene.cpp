@@ -41,10 +41,11 @@ void GameScene::init(int difficulty)
 	ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
 
 	//初始化难度系数
+	difficulty = (difficulty < 0 ? -difficulty : difficulty) % 3; //防止传入的难度系数超过范围
 	this->difficulty = difficulty;
 
 	//砖块初始化
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < difficulty * 4 + 10; i++)
 	{
 		blockLabelVector.append(QVector<QLabel *>{});
 		for (int j = 0; j < 16; j++)
@@ -63,13 +64,16 @@ void GameScene::init(int difficulty)
 	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &GameScene::paddleMoveLeftSlot);
 	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &GameScene::paddleMoveRightSlot);
 
-	//球移动计时器
+	//球每次移动计时触发器
 	ballMoveTimer.setInterval(20);
 	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
 
-	//球移动距离
-	ballMoveDx = 5;
-	ballMoveDy = 5;
+	//球每次移动距离
+	ballMoveDx = difficulty * 2 + 5;
+	ballMoveDy = difficulty * 2 + 5;
+
+	//挡板每次移动距离
+	paddleMoveDx = 6 - difficulty;
 }
 
 void GameScene::keyPressEvent(QKeyEvent * event)
@@ -108,7 +112,7 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 void GameScene::paddleMoveLeftSlot()
 {
 	int x = paddleLabel->x(); //获取当前的x坐标
-	x -= 5; //移动
+	x -= paddleMoveDx; //移动
 	if (x < 0) //判定向左移动是否会超出边界
 	{
 		paddleLabel->move(0, paddleLabel->y());
@@ -122,7 +126,7 @@ void GameScene::paddleMoveLeftSlot()
 void GameScene::paddleMoveRightSlot()
 {
 	int x = paddleLabel->x(); //获取当前的x坐标
-	x += 5; //移动
+	x += paddleMoveDx; //移动
 	if (x + paddleLabel->width() > width()) //判定向左移动是否会超出边界
 	{
 		paddleLabel->move(width() - paddleLabel->width(), paddleLabel->y());

@@ -17,15 +17,16 @@ GameScene::~GameScene()
 
 }
 
-void GameScene::init()
+void GameScene::init(int difficulty)
 {
 	//游戏元素初始化
 	//图片初始化
 	ballPixmap.load(":/PlayBricks/Resources/ball.png");
 	paddlePixmap.load(":/PlayBricks/Resources/paddle.png");
-	block_bluePixmap.load(":/PlayBricks/Resources/block_blue.png");
-	block_greenPixmap.load(":/PlayBricks/Resources/block_green.png");
-	block_redPixmap.load(":/PlayBricks/Resources/block_red.png");
+	blockPixmapVector.resize(3);
+	blockPixmapVector[0].load(":/PlayBricks/Resources/block_green.png");
+	blockPixmapVector[1].load(":/PlayBricks/Resources/block_blue.png");
+	blockPixmapVector[2].load(":/PlayBricks/Resources/block_red.png");
 
 	//挡板初始化
 	paddleLabel = new QLabel(this);
@@ -39,6 +40,9 @@ void GameScene::init()
 	ballLabel->setFixedSize(ballPixmap.size());
 	ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
 
+	//初始化难度系数
+	this->difficulty = difficulty;
+
 	//砖块初始化
 	for (int i = 0; i < 10; i++)
 	{
@@ -46,9 +50,9 @@ void GameScene::init()
 		for (int j = 0; j < 16; j++)
 		{
 			QLabel *blockLabel = new QLabel(this);
-			blockLabel->setPixmap(block_bluePixmap);
-			blockLabel->setFixedSize(block_bluePixmap.size());
-			blockLabel->move(j*block_bluePixmap.width(), i*block_bluePixmap.height());
+			blockLabel->setPixmap(blockPixmapVector[difficulty]);
+			blockLabel->setFixedSize(blockPixmapVector[difficulty].size());
+			blockLabel->move(j*blockPixmapVector[difficulty].width(), i*blockPixmapVector[difficulty].height());
 			blockLabelVector[blockLabelVector.size() - 1].append(blockLabel);
 		}
 	}

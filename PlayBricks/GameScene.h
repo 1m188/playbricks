@@ -15,13 +15,13 @@ private:
 	//一系列资源图片
 	QPixmap ballPixmap;
 	QPixmap paddlePixmap;
-	QPixmap block_bluePixmap;
-	QPixmap block_greenPixmap;
-	QPixmap block_redPixmap;
+	QVector<QPixmap> blockPixmapVector;
 
 	QLabel *ballLabel; //球
 	QLabel *paddleLabel; //挡板
 	QVector<QVector<QLabel *>> blockLabelVector; //砖块二维数组
+
+	int difficulty; //难度
 
 	//挡板移动定时器
 	QTimer paddleMoveLeftTimer; //左
@@ -37,7 +37,7 @@ public:
 	GameScene(Window *parent);
 	~GameScene();
 
-	void init() override;
+	void init(int difficulty); //初始化，传入难度
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件

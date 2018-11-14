@@ -46,7 +46,7 @@ void StartScene::newGameButtonClicked()
 {
 	GameScene *gameScene = new GameScene(Director::getInstance()->getWindow());
 	Director::getInstance()->setNowScene(gameScene);
-	gameScene->init();
+	gameScene->init(0);
 	gameScene->show();
 	deleteLater();
 }

@@ -13,7 +13,7 @@ Window::Window()
 
 	//标题和大小
 	setWindowTitle(tr(u8"打砖块"));
-	setFixedSize(1000, 800);
+	setFixedSize(1000, 940);
 
 	//移动到屏幕中央
 	QRect rect = frameGeometry();

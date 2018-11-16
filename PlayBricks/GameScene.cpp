@@ -106,8 +106,8 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 	{
 		paddleMoveRightTimer.stop();
 	}
-	//球开始移动
-	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
+	//按任意键释放后球开始移动
+	else if (!event->isAutoRepeat())
 	{
 		ballMoveTimer.start();
 	}

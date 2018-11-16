@@ -61,8 +61,8 @@ void GameScene::init(int difficulty)
 	//挡板移动定时器初始化
 	paddleMoveLeftTimer.setInterval(10);
 	paddleMoveRightTimer.setInterval(10);
-	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &GameScene::paddleMoveLeftSlot);
-	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &GameScene::paddleMoveRightSlot);
+	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, [=]() {paddleMove(-paddleMoveDx); }); //这里的值传递是怕里面的函数对这个重要的非const数值乱改
+	connect(&paddleMoveRightTimer, &QTimer::timeout, this, [=]() {paddleMove(paddleMoveDx); });
 
 	//球每次移动计时触发器初始化
 	ballMoveTimer.setInterval(20);
@@ -110,34 +110,6 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
 	{
 		ballMoveTimer.start();
-	}
-}
-
-void GameScene::paddleMoveLeftSlot()
-{
-	int x = paddleLabel->x(); //获取当前的x坐标
-	x -= paddleMoveDx; //移动
-	if (x < 0) //判定向左移动是否会超出边界
-	{
-		paddleLabel->move(0, paddleLabel->y());
-	}
-	else
-	{
-		paddleLabel->move(x, paddleLabel->y());
-	}
-}
-
-void GameScene::paddleMoveRightSlot()
-{
-	int x = paddleLabel->x(); //获取当前的x坐标
-	x += paddleMoveDx; //移动
-	if (x + paddleLabel->width() > width()) //判定向左移动是否会超出边界
-	{
-		paddleLabel->move(width() - paddleLabel->width(), paddleLabel->y());
-	}
-	else
-	{
-		paddleLabel->move(x, paddleLabel->y());
 	}
 }
 
@@ -227,6 +199,23 @@ outside:;
 			}
 		}
 	}
+}
+
+void GameScene::paddleMove(int distance)
+{
+	int x = paddleLabel->x(); //获取挡板当前左下角的x坐标
+	x += distance; //坐标移动
+				   //判定是否超出地图范围
+	if (x < 0)
+	{
+		x = 0;
+	}
+	else if (x > width() - paddleLabel->width())
+	{
+		x = width() - paddleLabel->width();
+	}
+	//移动
+	paddleLabel->move(x, paddleLabel->y());
 }
 
 bool GameScene::isCrash(QLabel * l1, QLabel * l2)

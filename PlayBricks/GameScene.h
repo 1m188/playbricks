@@ -31,6 +31,7 @@ private:
 	int ballMoveDy; //球每次在y方向移动的距离
 	int paddleMoveDx; //挡板在横向方向每次移动的距离
 
+	void paddleMove(int distance); //挡板移动
 	bool isCrash(QLabel *l1, QLabel *l2); //是否碰撞
 
 public:
@@ -44,8 +45,6 @@ protected:
 	void keyReleaseEvent(QKeyEvent *event) override; //重写释放按键事件
 
 	private slots:
-	void paddleMoveLeftSlot(); //挡板向左移动信号槽
-	void paddleMoveRightSlot(); //挡板向右移动信号槽
 	void ballMoveSlot(); //球移动信号槽
 };
 

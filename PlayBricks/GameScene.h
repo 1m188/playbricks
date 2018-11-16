@@ -24,7 +24,7 @@ private:
 	QLabel *scoreLabel; //得分显示
 	unsigned int nowScore; //当前得分
 
-	int difficulty; //难度
+	unsigned int difficulty; //难度系数
 
 	QTimer paddleMoveLeftTimer; //挡板左移动定时器
 	QTimer paddleMoveRightTimer; //挡板右移动定时器

@@ -41,7 +41,7 @@ void GameScene::init(int difficulty)
 	ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
 
 	//初始化难度系数
-	difficulty = (difficulty < 0 ? -difficulty : difficulty) % 3; //防止传入的难度系数超过范围
+	difficulty %= 3; //防止传入的难度系数超过范围
 	this->difficulty = difficulty;
 
 	//得分初始化

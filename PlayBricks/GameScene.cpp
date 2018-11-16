@@ -92,6 +92,12 @@ void GameScene::keyPressEvent(QKeyEvent * event)
 		paddleMoveRightTimer.start();
 		paddleMoveLeftTimer.stop();
 	}
+	//按住空格键球加速
+	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
+	{
+		ballMoveDx *= 3;
+		ballMoveDy *= 3;
+	}
 }
 
 void GameScene::keyReleaseEvent(QKeyEvent * event)
@@ -105,6 +111,12 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 	else if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
 	{
 		paddleMoveRightTimer.stop();
+	}
+	//释放空格键后球回到原来的速度
+	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
+	{
+		ballMoveDx /= 3;
+		ballMoveDy /= 3;
 	}
 	//按任意键释放后球开始移动
 	else if (!event->isAutoRepeat())

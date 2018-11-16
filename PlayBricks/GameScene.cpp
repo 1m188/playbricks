@@ -44,6 +44,18 @@ void GameScene::init(int difficulty)
 	difficulty = (difficulty < 0 ? -difficulty : difficulty) % 3; //防止传入的难度系数超过范围
 	this->difficulty = difficulty;
 
+	//得分初始化
+	nowScore = 0;
+	scoreLabel = new QLabel(this);
+	scoreLabel->setAlignment(Qt::AlignCenter);
+	scoreLabel->setFont(QFont(u8"微软雅黑", 13, 8));
+	QPalette p;
+	p.setColor(QPalette::WindowText, Qt::red);
+	scoreLabel->setPalette(p);
+	scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
+	scoreLabel->resize(width(), scoreLabel->sizeHint().height());
+	scoreLabel->move(0, 0);
+
 	//砖块初始化
 	for (int i = 0; i < difficulty * 4 + 10; i++)
 	{
@@ -53,7 +65,7 @@ void GameScene::init(int difficulty)
 			QLabel *blockLabel = new QLabel(this);
 			blockLabel->setPixmap(blockPixmapVector[difficulty]);
 			blockLabel->setFixedSize(blockPixmapVector[difficulty].size());
-			blockLabel->move(j*blockPixmapVector[difficulty].width(), i*blockPixmapVector[difficulty].height());
+			blockLabel->move(j*blockPixmapVector[difficulty].width(), scoreLabel->height() + i*blockPixmapVector[difficulty].height());
 			blockLabelVector[blockLabelVector.size() - 1].append(blockLabel);
 		}
 	}
@@ -147,7 +159,7 @@ void GameScene::ballMoveSlot()
 		y = height() - ballLabel->height();
 		ballMoveDy *= -1;
 	}
-	if (y < 0)
+	if (y < scoreLabel->height())
 	{
 		y = 0;
 		ballMoveDy *= -1;
@@ -170,6 +182,8 @@ void GameScene::ballMoveSlot()
 			{
 				ballMoveDy *= -1;
 				blockLabelVector[i][j]->hide();
+				nowScore += difficulty + 1;
+				scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
 				goto outside;
 			}
 		}
@@ -199,8 +213,11 @@ outside:;
 			paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
 			//重新摆放球的位置并重新设定球的移动方向
 			ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-			ballMoveDx = 5;
-			ballMoveDy = 5;
+			ballMoveDx = difficulty * 2 + 5;
+			ballMoveDy = difficulty * 2 + 5;
+			//重新初始化分数
+			nowScore = 0;
+			scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
 			//重新显示所有的砖块
 			for (int i = 0; i < blockLabelVector.size(); i++)
 			{
@@ -217,7 +234,7 @@ void GameScene::paddleMove(int distance)
 {
 	int x = paddleLabel->x(); //获取挡板当前左下角的x坐标
 	x += distance; //坐标移动
-				   //判定是否超出地图范围
+	//判定是否超出地图范围
 	if (x < 0)
 	{
 		x = 0;

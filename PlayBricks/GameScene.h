@@ -21,6 +21,9 @@ private:
 	QLabel *paddleLabel; //挡板
 	QVector<QVector<QLabel *>> blockLabelVector; //砖块二维数组
 
+	QLabel *scoreLabel; //得分显示
+	unsigned int nowScore; //当前得分
+
 	int difficulty; //难度
 
 	QTimer paddleMoveLeftTimer; //挡板左移动定时器

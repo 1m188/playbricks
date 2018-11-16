@@ -13,9 +13,9 @@ class GameScene : public Scene
 
 private:
 	//一系列资源图片
-	QPixmap ballPixmap;
-	QPixmap paddlePixmap;
-	QVector<QPixmap> blockPixmapVector;
+	QPixmap ballPixmap; //球的图片
+	QPixmap paddlePixmap; //挡板图片
+	QVector<QPixmap> blockPixmapVector; //砖块图片（分三个颜色，所以是数组）
 
 	QLabel *ballLabel; //球
 	QLabel *paddleLabel; //挡板
@@ -23,9 +23,8 @@ private:
 
 	int difficulty; //难度
 
-	//挡板移动定时器
-	QTimer paddleMoveLeftTimer; //左
-	QTimer paddleMoveRightTimer; //右
+	QTimer paddleMoveLeftTimer; //挡板左移动定时器
+	QTimer paddleMoveRightTimer; //挡板右移动定时器
 	QTimer ballMoveTimer; //球移动定时器
 
 	int ballMoveDx; //球每次在x方向移动的距离
@@ -42,12 +41,12 @@ public:
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件
-	void keyReleaseEvent(QKeyEvent *event) override; //...释放按键...
+	void keyReleaseEvent(QKeyEvent *event) override; //重写释放按键事件
 
 	private slots:
 	void paddleMoveLeftSlot(); //挡板向左移动信号槽
-	void paddleMoveRightSlot(); //...右...
-	void ballMoveSlot(); //球移动
+	void paddleMoveRightSlot(); //挡板向右移动信号槽
+	void ballMoveSlot(); //球移动信号槽
 };
 
 #endif // GAMESCENE_H

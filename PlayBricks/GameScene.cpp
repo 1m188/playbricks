@@ -64,7 +64,7 @@ void GameScene::init(int difficulty)
 	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, &GameScene::paddleMoveLeftSlot);
 	connect(&paddleMoveRightTimer, &QTimer::timeout, this, &GameScene::paddleMoveRightSlot);
 
-	//球每次移动计时触发器
+	//球每次移动计时触发器初始化
 	ballMoveTimer.setInterval(20);
 	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
 
@@ -78,14 +78,17 @@ void GameScene::init(int difficulty)
 
 void GameScene::keyPressEvent(QKeyEvent * event)
 {
-	if (event->key() == Qt::Key_Left) //挡板向左移动
+	//挡板向左移动
+	if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
 	{
-		//只允许向左的定时器工作
+		//向左移动的时候取消向右移动
 		paddleMoveLeftTimer.start();
 		paddleMoveRightTimer.stop();
 	}
-	else if (event->key() == Qt::Key_Right)
+	//挡板向右移动
+	else if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
 	{
+		//向右移动的时候取消向左移动
 		paddleMoveRightTimer.start();
 		paddleMoveLeftTimer.stop();
 	}
@@ -93,17 +96,18 @@ void GameScene::keyPressEvent(QKeyEvent * event)
 
 void GameScene::keyReleaseEvent(QKeyEvent * event)
 {
-	//释放按键则停止挡板移动
-	if (event->key() == Qt::Key_Left)
+	//挡板停止向左移动
+	if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
 	{
 		paddleMoveLeftTimer.stop();
 	}
-	else if (event->key() == Qt::Key_Right)
+	//挡板停止向右移动
+	else if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
 	{
 		paddleMoveRightTimer.stop();
 	}
 	//球开始移动
-	else if (event->key() == Qt::Key_Space)
+	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
 	{
 		ballMoveTimer.start();
 	}

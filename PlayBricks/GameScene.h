@@ -41,7 +41,7 @@ public:
 	GameScene(Window *parent);
 	~GameScene();
 
-	void init(int difficulty); //初始化，传入难度，目前有0，1，2三个阶位
+	void init(int difficulty); //隐藏基类同名函数，初始化，传入难度，目前有0，1，2三个阶位
 
 protected:
 	void keyPressEvent(QKeyEvent *event) override; //重写按键事件

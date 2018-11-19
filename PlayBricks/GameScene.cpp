@@ -197,7 +197,7 @@ outside:;
 		paddleMoveLeftTimer.stop();
 		paddleMoveRightTimer.stop();
 		ballMoveTimer.stop();
-		//显示游戏结束信息，如果不再来一局的话
+		//显示游戏结束信息，如果不再来一局的话回到开始场景
 		if (QMessageBox::information(this, tr(u8"游戏结束"), tr(u8"游戏结束，是否以当前难度再来一局？"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 		{
 			StartScene *startScene = new StartScene(Director::getInstance()->getWindow());

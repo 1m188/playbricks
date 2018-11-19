@@ -81,7 +81,7 @@ void GameScene::init(int difficulty)
 	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
 
 	//球每次向各方向移动的距离
-	ballMoveDxy = { difficulty * 2 + 5 ,difficulty * 2 + 5 };
+	ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
 
 	//挡板每次移动距离
 	paddleMoveDx = 6 - difficulty;
@@ -212,7 +212,7 @@ outside:;
 			paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
 			//重新摆放球的位置并重新设定球的移动方向
 			ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-			ballMoveDxy = { difficulty * 2 + 5 ,difficulty * 2 + 5 };
+			ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
 			//重新初始化分数
 			nowScore = 0;
 			scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));

@@ -110,6 +110,11 @@ void GameScene::keyPressEvent(QKeyEvent * event)
 		ballMoveDx *= 3;
 		ballMoveDy *= 3;
 	}
+	//按任意键释放后球开始移动
+	if (!event->isAutoRepeat())
+	{
+		ballMoveTimer.start();
+	}
 }
 
 void GameScene::keyReleaseEvent(QKeyEvent * event)
@@ -129,11 +134,6 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 	{
 		ballMoveDx /= 3;
 		ballMoveDy /= 3;
-	}
-	//按任意键释放后球开始移动
-	else if (!event->isAutoRepeat())
-	{
-		ballMoveTimer.start();
 	}
 }
 

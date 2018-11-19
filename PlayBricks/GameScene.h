@@ -30,8 +30,7 @@ private:
 	QTimer paddleMoveRightTimer; //挡板右移动定时器
 	QTimer ballMoveTimer; //球移动定时器
 
-	int ballMoveDx; //球每次在x方向移动的距离
-	int ballMoveDy; //球每次在y方向移动的距离
+	QPair<int, int> ballMoveDxy; //球每次在x方向和y方向移动的距离
 	int paddleMoveDx; //挡板在横向方向每次移动的距离
 
 	void paddleMove(int distance); //挡板移动

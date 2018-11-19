@@ -80,9 +80,8 @@ void GameScene::init(int difficulty)
 	ballMoveTimer.setInterval(20);
 	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
 
-	//球每次移动距离
-	ballMoveDx = difficulty * 2 + 5;
-	ballMoveDy = difficulty * 2 + 5;
+	//球每次向各方向移动的距离
+	ballMoveDxy = { difficulty * 2 + 5 ,difficulty * 2 + 5 };
 
 	//挡板每次移动距离
 	paddleMoveDx = 6 - difficulty;
@@ -107,8 +106,8 @@ void GameScene::keyPressEvent(QKeyEvent * event)
 	//按住空格键球加速
 	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
 	{
-		ballMoveDx *= 3;
-		ballMoveDy *= 3;
+		ballMoveDxy.first *= 3;
+		ballMoveDxy.second *= 3;
 	}
 	//按任意键释放后球开始移动
 	if (!event->isAutoRepeat())
@@ -132,37 +131,37 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 	//释放空格键后球回到原来的速度
 	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
 	{
-		ballMoveDx /= 3;
-		ballMoveDy /= 3;
+		ballMoveDxy.first /= 3;
+		ballMoveDxy.second /= 3;
 	}
 }
 
 void GameScene::ballMoveSlot()
 {
 	//更新球坐标
-	int x = ballLabel->x() + ballMoveDx;
-	int y = ballLabel->y() + ballMoveDy;
+	int x = ballLabel->x() + ballMoveDxy.first;
+	int y = ballLabel->y() + ballMoveDxy.second;
 
 	//如果球超出边界，则把球限制在边界之内，同时改变速度方向
 	if (x + ballLabel->width() > width())
 	{
 		x = width() - ballLabel->width();
-		ballMoveDx *= -1;
+		ballMoveDxy.first *= -1;
 	}
 	if (x < 0)
 	{
 		x = 0;
-		ballMoveDx *= -1;
+		ballMoveDxy.first *= -1;
 	}
 	if (y + ballLabel->height() > height())
 	{
 		y = height() - ballLabel->height();
-		ballMoveDy *= -1;
+		ballMoveDxy.second *= -1;
 	}
 	if (y < scoreLabel->height())
 	{
 		y = 0;
-		ballMoveDy *= -1;
+		ballMoveDxy.second *= -1;
 	}
 	//刷新球的位置
 	ballLabel->move(x, y);
@@ -170,7 +169,7 @@ void GameScene::ballMoveSlot()
 	//判断球是否和挡板相撞
 	if (isCrash(ballLabel, paddleLabel))
 	{
-		ballMoveDy *= -1;
+		ballMoveDxy.second *= -1;
 	}
 
 	//判断是否撞到了砖块
@@ -180,7 +179,7 @@ void GameScene::ballMoveSlot()
 		{
 			if (isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
 			{
-				ballMoveDy *= -1;
+				ballMoveDxy.second *= -1;
 				blockLabelVector[i][j]->hide();
 				nowScore += difficulty + 1;
 				scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
@@ -213,8 +212,7 @@ outside:;
 			paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
 			//重新摆放球的位置并重新设定球的移动方向
 			ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-			ballMoveDx = difficulty * 2 + 5;
-			ballMoveDy = difficulty * 2 + 5;
+			ballMoveDxy = { difficulty * 2 + 5 ,difficulty * 2 + 5 };
 			//重新初始化分数
 			nowScore = 0;
 			scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));

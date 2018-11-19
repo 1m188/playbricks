@@ -35,6 +35,7 @@ private:
 
 	void paddleMove(int distance); //挡板移动
 	bool isCrash(QLabel *l1, QLabel *l2); //是否碰撞
+	void updateBallMoveDxy(QLabel *sth); //通过原来的每次移动距离和与球相撞的物体来更新球的下一步移动方向
 
 public:
 	GameScene(Window *parent);

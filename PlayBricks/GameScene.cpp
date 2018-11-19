@@ -169,7 +169,7 @@ void GameScene::ballMoveSlot()
 	//ÅÐ¶ÏÇòÊÇ·ñºÍµ²°åÏà×²
 	if (isCrash(ballLabel, paddleLabel))
 	{
-		ballMoveDxy.second *= -1;
+		updateBallMoveDxy(paddleLabel);
 	}
 
 	//ÅÐ¶ÏÊÇ·ñ×²µ½ÁË×©¿é
@@ -179,7 +179,7 @@ void GameScene::ballMoveSlot()
 		{
 			if (isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
 			{
-				ballMoveDxy.second *= -1;
+				updateBallMoveDxy(blockLabelVector[i][j]);
 				blockLabelVector[i][j]->hide();
 				nowScore += difficulty + 1;
 				scoreLabel->setText(tr(u8"·ÖÊý£º%1").arg(nowScore));
@@ -248,4 +248,23 @@ void GameScene::paddleMove(int distance)
 bool GameScene::isCrash(QLabel * l1, QLabel * l2)
 {
 	return l1->x() >= l2->x() - l1->width() && l1->x() <= l2->x() + l2->width() && l1->y() >= l2->y() - l1->height() && l1->y() <= l2->y() + l2->height();
+}
+
+void GameScene::updateBallMoveDxy(QLabel * sth)
+{
+	int overWidth = ((ballLabel->x() + ballLabel->width() < sth->x() + sth->width()) ? (ballLabel->x() + ballLabel->width()) : (sth->x() + sth->width())) - (ballLabel->x() > sth->x() ? ballLabel->x() : sth->x());
+	int overHeight = ((ballLabel->y() + ballLabel->height() < sth->y() + sth->height()) ? (ballLabel->y() + ballLabel->height()) : (sth->y() + sth->height())) - (ballLabel->y() > sth->y() ? ballLabel->y() : sth->y());
+	if (overWidth > overHeight)
+	{
+		ballMoveDxy.second *= -1;
+	}
+	else if (overWidth < overHeight)
+	{
+		ballMoveDxy.first *= -1;
+	}
+	else
+	{
+		ballMoveDxy.first *= -1;
+		ballMoveDxy.second *= -1;
+	}
 }

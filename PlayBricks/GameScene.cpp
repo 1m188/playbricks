@@ -190,6 +190,7 @@ void GameScene::ballMoveSlot()
 outside:;
 
 	//判断是否游戏结束
+	//球落地
 	if (ballLabel->y() + ballLabel->height() >= height())
 	{
 		//停止一切
@@ -226,6 +227,36 @@ outside:;
 			}
 		}
 	}
+	//砖块打完
+	else
+	{
+		//对每个砖块遍历判断，如果有砖块显示（没被打）的话就跳出去，否则进行砖块打完之后的行为
+		for (int i = 0; i < blockLabelVector.size(); i++)
+		{
+			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			{
+				if (!blockLabelVector[i][j]->isHidden())
+				{
+					goto judgeEnd;
+				}
+			}
+		}
+		//除了分数不重新刷新之外，其他的重新刷新重来一遍，直到某一次球落地为止，此间的分数一直累加
+		//重新摆放挡板位置
+		paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
+		//重新摆放球的位置并重新设定球的移动方向
+		ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
+		ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
+		//重新显示所有的砖块
+		for (int i = 0; i < blockLabelVector.size(); i++)
+		{
+			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			{
+				blockLabelVector[i][j]->show();
+			}
+		}
+	}
+judgeEnd:;
 }
 
 void GameScene::paddleMove(int distance)

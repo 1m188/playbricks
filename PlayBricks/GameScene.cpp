@@ -252,8 +252,10 @@ bool GameScene::isCrash(QLabel * l1, QLabel * l2)
 
 void GameScene::updateBallMoveDxy(QLabel * sth)
 {
+	//获取球和物体相撞的时候的共同的宽和高
 	int overWidth = ((ballLabel->x() + ballLabel->width() < sth->x() + sth->width()) ? (ballLabel->x() + ballLabel->width()) : (sth->x() + sth->width())) - (ballLabel->x() > sth->x() ? ballLabel->x() : sth->x());
 	int overHeight = ((ballLabel->y() + ballLabel->height() < sth->y() + sth->height()) ? (ballLabel->y() + ballLabel->height()) : (sth->y() + sth->height())) - (ballLabel->y() > sth->y() ? ballLabel->y() : sth->y());
+	//判定哪边更长，如果是宽说明球的趋势应是从上或者下相撞的，否则应该是左右相撞，极端情况则完全反射
 	if (overWidth > overHeight)
 	{
 		ballMoveDxy.second *= -1;

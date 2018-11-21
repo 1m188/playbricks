@@ -1,6 +1,6 @@
 #include "StartScene.h"
 #include "Director.h"
-#include "GameScene.h"
+#include "DifficultyChooseScene.h"
 #include "QLabel"
 #include "QPushButton"
 #include "QGridLayout"
@@ -44,9 +44,9 @@ void StartScene::init()
 
 void StartScene::newGameButtonClicked()
 {
-	GameScene *gameScene = new GameScene(Director::getInstance()->getWindow());
-	Director::getInstance()->setNowScene(gameScene);
-	gameScene->init(0);
-	gameScene->show();
+	DifficultyChooseScene *difficultyChooseScene = new DifficultyChooseScene(Director::getInstance()->getWindow());
+	Director::getInstance()->setNowScene(difficultyChooseScene);
+	difficultyChooseScene->init();
+	difficultyChooseScene->show();
 	deleteLater();
 }

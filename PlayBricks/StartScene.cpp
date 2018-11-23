@@ -1,6 +1,7 @@
 #include "StartScene.h"
 #include "Director.h"
 #include "DifficultyChooseScene.h"
+#include "HighestScoreScene.h"
 #include "QLabel"
 #include "QPushButton"
 #include "QGridLayout"
@@ -30,6 +31,11 @@ void StartScene::init()
 	newGameButton->setText(tr(u8"开始新游戏"));
 	connect(newGameButton, &QPushButton::clicked, this, &StartScene::newGameButtonClicked);
 
+	QPushButton *highestScoreButton = new QPushButton(this);
+	highestScoreButton->setFont(QFont(u8"微软雅黑", 15));
+	highestScoreButton->setText(tr(u8"最高分"));
+	connect(highestScoreButton, &QPushButton::clicked, this, &StartScene::highestScoreButtonClicked);
+
 	QPushButton *exitButton = new QPushButton(this);
 	exitButton->setFont(QFont(u8"微软雅黑", 15));
 	exitButton->setText(tr(u8"退出"));
@@ -38,8 +44,9 @@ void StartScene::init()
 	//布局
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(infoLabel, 0, 0, 10, 15);
-	layout->addWidget(newGameButton, 10, 5, 3, 5);
-	layout->addWidget(exitButton, 13, 5, 3, 5);
+	layout->addWidget(newGameButton, 10, 5, 2, 5);
+	layout->addWidget(highestScoreButton, 12, 5, 2, 5);
+	layout->addWidget(exitButton, 14, 5, 2, 5);
 }
 
 void StartScene::newGameButtonClicked()
@@ -48,5 +55,14 @@ void StartScene::newGameButtonClicked()
 	Director::getInstance()->setNowScene(difficultyChooseScene);
 	difficultyChooseScene->init();
 	difficultyChooseScene->show();
+	deleteLater();
+}
+
+void StartScene::highestScoreButtonClicked()
+{
+	HighestScoreScene *highestScoreScene = new HighestScoreScene(Director::getInstance()->getWindow());
+	Director::getInstance()->setNowScene(highestScoreScene);
+	highestScoreScene->init();
+	highestScoreScene->show();
 	deleteLater();
 }

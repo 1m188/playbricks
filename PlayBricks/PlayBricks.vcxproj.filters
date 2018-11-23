@@ -39,6 +39,12 @@
     <Filter Include="场景\难度选择场景">
       <UniqueIdentifier>{fdd96044-ff16-4253-a9f9-25e705b96deb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="场景\最高分场景">
+      <UniqueIdentifier>{3f2cbf52-c2ec-410d-a781-881e5a044c68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="设置">
+      <UniqueIdentifier>{0a7be047-75fa-4e72-8494-4263e62d69d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -93,6 +99,18 @@
     <ClCompile Include="DifficultyChooseScene.cpp">
       <Filter>场景\难度选择场景</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_HighestScoreScene.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_HighestScoreScene.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="HighestScoreScene.cpp">
+      <Filter>场景\最高分场景</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>设置</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -113,10 +131,16 @@
     <CustomBuild Include="DifficultyChooseScene.h">
       <Filter>场景\难度选择场景</Filter>
     </CustomBuild>
+    <CustomBuild Include="HighestScoreScene.h">
+      <Filter>场景\最高分场景</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Director.h">
       <Filter>导演</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>设置</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

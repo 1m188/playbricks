@@ -1,10 +1,12 @@
 #include "GameScene.h"
 #include "Director.h"
+#include "Config.h"
 #include "StartScene.h"
 #include "QApplication"
 #include "QDeskTopWidget"
 #include "QKeyEvent"
 #include "QMessageBox"
+#include "QInputDialog"
 
 GameScene::GameScene(Window *parent)
 	: Scene(parent)
@@ -197,8 +199,14 @@ outside:;
 		paddleMoveLeftTimer.stop();
 		paddleMoveRightTimer.stop();
 		ballMoveTimer.stop();
+		//游戏结束之后如果为最高分的话，更新最高分和最高分保持者
+		if (nowScore > Config::getInstance()->getHighestScore())
+		{
+			Config::getInstance()->setHighestScore(nowScore);
+			Config::getInstance()->setHighestScorePlayer(QInputDialog::getText(this, tr(u8"最高分"), tr(u8"你的分数是%1，恭喜你成为最高分，请输入你的尊姓大名。").arg(nowScore)));
+		}
 		//显示游戏结束信息，如果不再来一局的话回到开始场景
-		if (QMessageBox::information(this, tr(u8"游戏结束"), tr(u8"游戏结束，是否以当前难度再来一局？"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+		if (QMessageBox::information(this, tr(u8"游戏结束"), tr(u8"游戏结束，你的分数是%1，是否以当前难度再来一局？").arg(nowScore), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 		{
 			StartScene *startScene = new StartScene(Director::getInstance()->getWindow());
 			Director::getInstance()->setNowScene(startScene);

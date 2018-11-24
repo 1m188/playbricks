@@ -11,8 +11,9 @@ private:
 
 	static Config *instance; //单例指针
 
-	int highestScore; //最高分
-	QString highestScorePlayer; //最高分保持者
+	int highestScore = 0; //最高分
+	QString highestScorePlayer = "None"; //最高分保持者
+	QString themeResourceUrl = ":/theme/Resources/theme/default.qss"; //当前主题资源url
 
 public:
 	Config(const Config &) = delete;
@@ -28,6 +29,8 @@ public:
 	int getHighestScore(); //获取最高分分数
 	void setHighestScorePlayer(QString highestScorePlayer); //设置最高分保持者
 	QString getHighestScorePlayer(); //获取最高分保持者
+	void setThemeResourceUrl(QString themeResourceUrl); //设置当前主题资源url
+	QString getThemeResourceUrl(); //获取当前主题资源url
 };
 
 #endif // CONFIG_H

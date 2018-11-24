@@ -1,6 +1,7 @@
 #include "SettingScene.h"
 #include "Director.h"
 #include "StartScene.h"
+#include "ThemeChooseScene.h"
 #include "QLabel"
 #include "QPushButton"
 #include "QGridLayout"
@@ -43,7 +44,11 @@ void SettingScene::init()
 
 void SettingScene::themeButtonClicked()
 {
-
+	ThemeChooseScene *themeChooseScene = new ThemeChooseScene(Director::getInstance()->getWindow());
+	Director::getInstance()->setNowScene(themeChooseScene);
+	themeChooseScene->init();
+	themeChooseScene->show();
+	deleteLater();
 }
 
 void SettingScene::returnToStartSceneButtonClicked()

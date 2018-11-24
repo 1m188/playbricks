@@ -48,6 +48,9 @@
     <Filter Include="场景\设置场景">
       <UniqueIdentifier>{4c3ef31d-519c-4425-83eb-302d39ad2c2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="场景\主题选择场景">
+      <UniqueIdentifier>{e685955a-05c0-49c1-8bee-69da88f48a2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -123,6 +126,15 @@
     <ClCompile Include="SettingScene.cpp">
       <Filter>场景\设置场景</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ThemeChooseScene.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ThemeChooseScene.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ThemeChooseScene.cpp">
+      <Filter>场景\主题选择场景</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -148,6 +160,9 @@
     </CustomBuild>
     <CustomBuild Include="SettingScene.h">
       <Filter>场景\设置场景</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ThemeChooseScene.h">
+      <Filter>场景\主题选择场景</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,15 @@
 <RCC>
-    <qresource prefix="/PlayBricks">
+    <qresource prefix="/game">
         <file>Resources/ball.png</file>
         <file>Resources/block_blue.png</file>
         <file>Resources/block_green.png</file>
         <file>Resources/block_red.png</file>
         <file>Resources/paddle.png</file>
+    </qresource>
+    <qresource prefix="/theme">
+        <file>Resources/theme/black.qss</file>
+        <file>Resources/theme/default.qss</file>
+        <file>Resources/theme/gray.qss</file>
+        <file>Resources/theme/yellow.qss</file>
     </qresource>
 </RCC>

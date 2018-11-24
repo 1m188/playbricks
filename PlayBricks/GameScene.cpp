@@ -23,12 +23,12 @@ void GameScene::init(int difficulty)
 {
 	//游戏元素初始化
 	//图片初始化
-	ballPixmap.load(":/PlayBricks/Resources/ball.png");
-	paddlePixmap.load(":/PlayBricks/Resources/paddle.png");
+	ballPixmap.load(":/game/Resources/ball.png");
+	paddlePixmap.load(":/game/Resources/paddle.png");
 	blockPixmapVector.resize(3);
-	blockPixmapVector[0].load(":/PlayBricks/Resources/block_green.png");
-	blockPixmapVector[1].load(":/PlayBricks/Resources/block_blue.png");
-	blockPixmapVector[2].load(":/PlayBricks/Resources/block_red.png");
+	blockPixmapVector[0].load(":/game/Resources/block_green.png");
+	blockPixmapVector[1].load(":/game/Resources/block_blue.png");
+	blockPixmapVector[2].load(":/game/Resources/block_red.png");
 
 	//挡板初始化
 	paddleLabel = new QLabel(this);

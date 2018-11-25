@@ -5,8 +5,6 @@
 #include "QLabel"
 #include "QPushButton"
 #include "QGridLayout"
-#include "QFile"
-#include "QApplication"
 
 ThemeChooseScene::ThemeChooseScene(Window *parent)
 	: Scene(parent)
@@ -68,12 +66,7 @@ void ThemeChooseScene::init()
 
 void ThemeChooseScene::themeChooseButtonClicked()
 {
-	QString themeResourceUrl = QString(":/theme/Resources/theme/%1.qss").arg(sender()->objectName());
-	Config::getInstance()->setThemeResourceUrl(themeResourceUrl);
-	QFile f(themeResourceUrl);
-	f.open(QIODevice::ReadOnly);
-	qApp->setStyleSheet(f.readAll());
-	f.close();
+	Config::getInstance()->setTheme(QString(":/theme/Resources/theme/%1.qss").arg(sender()->objectName()));
 }
 
 void ThemeChooseScene::returnToStartSceneButtonClicked()

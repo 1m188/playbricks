@@ -91,50 +91,56 @@ void GameScene::init(int difficulty)
 
 void GameScene::keyPressEvent(QKeyEvent * event)
 {
-	//挡板向左移动
-	if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
-	{
-		//向左移动的时候取消向右移动
-		paddleMoveLeftTimer.start();
-		paddleMoveRightTimer.stop();
-	}
-	//挡板向右移动
-	else if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
-	{
-		//向右移动的时候取消向左移动
-		paddleMoveRightTimer.start();
-		paddleMoveLeftTimer.stop();
-	}
-	//按住空格键球加速
-	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
-	{
-		ballMoveDxy.first *= 3;
-		ballMoveDxy.second *= 3;
-	}
-	//按任意键释放后球开始移动
 	if (!event->isAutoRepeat())
 	{
-		ballMoveTimer.start();
+		//挡板向左移动
+		if (event->key() == Qt::Key_Left)
+		{
+			//向左移动的时候取消向右移动
+			paddleMoveLeftTimer.start();
+			paddleMoveRightTimer.stop();
+		}
+		//挡板向右移动
+		else if (event->key() == Qt::Key_Right)
+		{
+			//向右移动的时候取消向左移动
+			paddleMoveRightTimer.start();
+			paddleMoveLeftTimer.stop();
+		}
+		//按住空格键球加速
+		else if (event->key() == Qt::Key_Space)
+		{
+			ballMoveDxy.first *= 3;
+			ballMoveDxy.second *= 3;
+		}
+		//如果球没有移动的话，按任意键后球开始移动
+		if (!ballMoveTimer.isActive())
+		{
+			ballMoveTimer.start();
+		}
 	}
 }
 
 void GameScene::keyReleaseEvent(QKeyEvent * event)
 {
-	//挡板停止向左移动
-	if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
+	if (!event->isAutoRepeat())
 	{
-		paddleMoveLeftTimer.stop();
-	}
-	//挡板停止向右移动
-	else if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
-	{
-		paddleMoveRightTimer.stop();
-	}
-	//释放空格键后球回到原来的速度
-	else if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
-	{
-		ballMoveDxy.first /= 3;
-		ballMoveDxy.second /= 3;
+		//挡板停止向左移动
+		if (event->key() == Qt::Key_Left)
+		{
+			paddleMoveLeftTimer.stop();
+		}
+		//挡板停止向右移动
+		else if (event->key() == Qt::Key_Right)
+		{
+			paddleMoveRightTimer.stop();
+		}
+		//释放空格键后球回到原来的速度
+		else if (event->key() == Qt::Key_Space)
+		{
+			ballMoveDxy.first /= 3;
+			ballMoveDxy.second /= 3;
+		}
 	}
 }
 

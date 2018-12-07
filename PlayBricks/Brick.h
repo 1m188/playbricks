@@ -4,7 +4,7 @@
 #include "Sprite.h"
 
 //单个砖块类
-class Brick :Sprite
+class Brick :public Sprite
 {
 private:
 	//是否被撞过

@@ -1,4 +1,6 @@
 #include "FpsChooseScene.h"
+#include "Director.h"
+#include "StartScene.h"
 #include "QLabel"
 #include "QPushButton"
 #include "QSlider"
@@ -42,6 +44,7 @@ void FpsChooseScene::init()
 	QPushButton *returnToStartSceneButton = new QPushButton(this);
 	returnToStartSceneButton->setFont(QFont(u8"微软雅黑", 15));
 	returnToStartSceneButton->setText(tr(u8"返回开始界面"));
+	connect(returnToStartSceneButton, &QPushButton::clicked, this, &FpsChooseScene::returnToStartSceneButtonClicked);
 
 	//布局
 	QGridLayout *layout = new QGridLayout(this);
@@ -50,4 +53,13 @@ void FpsChooseScene::init()
 	layout->addWidget(fpsSlider, 10, 5, 4, 5);
 	layout->addWidget(fpsValueLabel, 10, 10, 4, 5);
 	layout->addWidget(returnToStartSceneButton, 14, 5, 4, 5);
+}
+
+void FpsChooseScene::returnToStartSceneButtonClicked()
+{
+	StartScene *startScene = new StartScene(Director::getInstance()->getWindow());
+	Director::getInstance()->setNowScene(startScene);
+	startScene->init();
+	startScene->show();
+	deleteLater();
 }

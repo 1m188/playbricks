@@ -13,6 +13,9 @@ public:
 	~FpsChooseScene();
 
 	void init() override; //初始化场景
+
+	private slots:
+	void returnToStartSceneButtonClicked(); //单击返回开始场景按钮
 };
 
 #endif // FPSCHOOSESCENE_H

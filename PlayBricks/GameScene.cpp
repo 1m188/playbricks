@@ -2,11 +2,10 @@
 #include "Director.h"
 #include "Config.h"
 #include "StartScene.h"
-#include "QApplication"
-#include "QDeskTopWidget"
 #include "QKeyEvent"
 #include "QMessageBox"
 #include "QInputDialog"
+#include "QPainter"
 
 GameScene::GameScene(Window *parent)
 	: Scene(parent)
@@ -25,68 +24,39 @@ void GameScene::init(int difficulty)
 	//图片初始化
 	ballPixmap.load(":/game/Resources/game/ball.png");
 	paddlePixmap.load(":/game/Resources/game/paddle.png");
-	blockPixmapVector.resize(3);
-	blockPixmapVector[0].load(":/game/Resources/game/block_green.png");
-	blockPixmapVector[1].load(":/game/Resources/game/block_blue.png");
-	blockPixmapVector[2].load(":/game/Resources/game/block_red.png");
-
-	//挡板初始化
-	paddleLabel = new QLabel(this);
-	paddleLabel->setPixmap(paddlePixmap);
-	paddleLabel->setFixedSize(paddlePixmap.size());
-	paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
-
-	//球初始化
-	ballLabel = new QLabel(this);
-	ballLabel->setPixmap(ballPixmap);
-	ballLabel->setFixedSize(ballPixmap.size());
-	ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
+	bricksImageVector.resize(3);
+	bricksImageVector[0].load(":/game/Resources/game/block_green.png");
+	bricksImageVector[1].load(":/game/Resources/game/block_blue.png");
+	bricksImageVector[2].load(":/game/Resources/game/block_red.png");
 
 	//初始化难度系数
-	difficulty %= 3; //防止传入的难度系数超过范围
-	this->difficulty = difficulty;
+	this->difficulty = difficulty % 3; //防止传入的参数超过限制
+
+	//挡板初始化
+	paddle = Paddle(width() / 2 - paddlePixmap.width() / 2, height() - paddlePixmap.height() - 10, paddlePixmap.width(), paddlePixmap.height(), paddlePixmap, 6 - this->difficulty, false, false);
+
+	//球初始化
+	ball = Ball(paddle.getX() + paddle.getWidth() / 2 - ballPixmap.width() / 2, paddle.getY() - ballPixmap.height() - 10, ballPixmap.width(), ballPixmap.height(), ballPixmap, this->difficulty * 2 + 5, this->difficulty * 2 + 5, false);
 
 	//得分初始化
 	nowScore = 0;
-	scoreLabel = new QLabel(this);
-	scoreLabel->setAlignment(Qt::AlignCenter);
-	scoreLabel->setFont(QFont(u8"微软雅黑", 13, 8));
-	QPalette p;
-	p.setColor(QPalette::WindowText, Qt::red);
-	scoreLabel->setPalette(p);
-	scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
-	scoreLabel->resize(width(), scoreLabel->sizeHint().height());
-	scoreLabel->move(0, 0);
 
 	//砖块初始化
-	for (int i = 0; i < difficulty * 4 + 10; i++)
+	for (int i = 0; i < this->difficulty * 4 + 10; i++)
 	{
-		blockLabelVector.append(QVector<QLabel *>{});
+		bricksVector.append(QVector<Brick>{});
 		for (int j = 0; j < 16; j++)
 		{
-			QLabel *blockLabel = new QLabel(this);
-			blockLabel->setPixmap(blockPixmapVector[difficulty]);
-			blockLabel->setFixedSize(blockPixmapVector[difficulty].size());
-			blockLabel->move(j*blockPixmapVector[difficulty].width(), scoreLabel->height() + i*blockPixmapVector[difficulty].height());
-			blockLabelVector[blockLabelVector.size() - 1].append(blockLabel);
+			Brick brick(j*bricksImageVector.at(this->difficulty).width(), i*bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty).width(), bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty), false);
+			bricksVector[bricksVector.size() - 1].append(brick);
 		}
 	}
 
-	//挡板移动定时器初始化
-	paddleMoveLeftTimer.setInterval(10);
-	paddleMoveRightTimer.setInterval(10);
-	connect(&paddleMoveLeftTimer, &QTimer::timeout, this, [=]() {paddleMove(-paddleMoveDx); }); //这里的值传递是怕里面的函数对这个重要的非const数值乱改
-	connect(&paddleMoveRightTimer, &QTimer::timeout, this, [=]() {paddleMove(paddleMoveDx); });
-
-	//球每次移动计时触发器初始化
-	ballMoveTimer.setInterval(20);
-	connect(&ballMoveTimer, &QTimer::timeout, this, &GameScene::ballMoveSlot);
-
-	//球每次向各方向移动的距离
-	ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
-
-	//挡板每次移动距离
-	paddleMoveDx = 6 - difficulty;
+	//初始化并启动定时器
+	timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, &GameScene::gameCycle);
+	timer->setInterval(33);
+	timer->start();
 }
 
 void GameScene::keyPressEvent(QKeyEvent * event)
@@ -96,27 +66,23 @@ void GameScene::keyPressEvent(QKeyEvent * event)
 		//挡板向左移动
 		if (event->key() == Qt::Key_Left)
 		{
-			//向左移动的时候取消向右移动
-			paddleMoveLeftTimer.start();
-			paddleMoveRightTimer.stop();
+			paddle.setIsLefting(true);
 		}
 		//挡板向右移动
 		else if (event->key() == Qt::Key_Right)
 		{
-			//向右移动的时候取消向左移动
-			paddleMoveRightTimer.start();
-			paddleMoveLeftTimer.stop();
+			paddle.setIsRighting(true);
 		}
 		//按住空格键球加速
 		else if (event->key() == Qt::Key_Space)
 		{
-			ballMoveDxy.first *= 3;
-			ballMoveDxy.second *= 3;
+			ball.setDx(ball.getDx() * 3);
+			ball.setDy(ball.getDy() * 3);
 		}
 		//如果球没有移动的话，按任意键后球开始移动
-		if (!ballMoveTimer.isActive())
+		if (!ball.getIsMoving())
 		{
-			ballMoveTimer.start();
+			ball.setIsMoving(true);
 		}
 	}
 }
@@ -128,83 +94,129 @@ void GameScene::keyReleaseEvent(QKeyEvent * event)
 		//挡板停止向左移动
 		if (event->key() == Qt::Key_Left)
 		{
-			paddleMoveLeftTimer.stop();
+			paddle.setIsLefting(false);
 		}
 		//挡板停止向右移动
 		else if (event->key() == Qt::Key_Right)
 		{
-			paddleMoveRightTimer.stop();
+			paddle.setIsRighting(false);
 		}
 		//释放空格键后球回到原来的速度
 		else if (event->key() == Qt::Key_Space)
 		{
-			ballMoveDxy.first /= 3;
-			ballMoveDxy.second /= 3;
+			ball.setDx(ball.getDx() / 3);
+			ball.setDy(ball.getDy() / 3);
 		}
 	}
 }
 
-void GameScene::ballMoveSlot()
+void GameScene::paintEvent(QPaintEvent *event)
 {
-	//更新球坐标
-	int x = ballLabel->x() + ballMoveDxy.first;
-	int y = ballLabel->y() + ballMoveDxy.second;
+	QPainter *painter = new QPainter(this);
 
-	//如果球超出边界，则把球限制在边界之内，同时改变速度方向
-	if (x + ballLabel->width() > width())
-	{
-		x = width() - ballLabel->width();
-		ballMoveDxy.first *= -1;
-	}
-	if (x < 0)
-	{
-		x = 0;
-		ballMoveDxy.first *= -1;
-	}
-	if (y + ballLabel->height() > height())
-	{
-		y = height() - ballLabel->height();
-		ballMoveDxy.second *= -1;
-	}
-	if (y < scoreLabel->height())
-	{
-		y = 0;
-		ballMoveDxy.second *= -1;
-	}
-	//刷新球的位置
-	ballLabel->move(x, y);
+	//绘制挡板
+	painter->drawPixmap(paddle.getX(), paddle.getY(), paddle.getImage());
 
-	//判断球是否和挡板相撞
-	if (isCrash(ballLabel, paddleLabel))
-	{
-		updateBallMoveDxy(paddleLabel);
-	}
+	//绘制球
+	painter->drawPixmap(ball.getX(), ball.getY(), ball.getImage());
 
-	//判断是否撞到了砖块
-	for (int i = 0; i < blockLabelVector.size(); i++)
+	//绘制砖块
+	for (auto &vector : bricksVector)
 	{
-		for (int j = 0; j < blockLabelVector[i].size(); j++)
+		for (Brick &brick : vector)
 		{
-			if (isCrash(ballLabel, blockLabelVector[i][j]) && !blockLabelVector[i][j]->isHidden())
+			//没有被撞过的才绘制
+			if (!brick.getIsCollided())
 			{
-				updateBallMoveDxy(blockLabelVector[i][j]);
-				blockLabelVector[i][j]->hide();
+				painter->drawPixmap(brick.getX(), brick.getY(), brick.getImage());
+			}
+		}
+	}
+
+	painter->end();
+
+	Scene::paintEvent(event);
+}
+
+void GameScene::gameCycle()
+{
+	//计算状态
+	//挡板移动
+	if (paddle.getIsLefting())
+	{
+		paddle.setX(paddle.getX() - paddle.getDx());
+	}
+	if (paddle.getIsRighting())
+	{
+		paddle.setX(paddle.getX() + paddle.getDx());
+	}
+
+	//挡板碰到地图边界
+	if (paddle.getX() < 0)
+	{
+		paddle.setX(0);
+	}
+	else if (paddle.getX() + paddle.getWidth() > width())
+	{
+		paddle.setX(width() - paddle.getWidth());
+	}
+
+	//球移动
+	if (ball.getIsMoving())
+	{
+		ball.setX(ball.getX() + ball.getDx());
+		ball.setY(ball.getY() + ball.getDy());
+	}
+
+	//球碰到地图边界
+	//碰到左边界
+	if (ball.getX() < 0)
+	{
+		ball.setX(0);
+		ball.setDx(ball.getDx()*-1);
+	}
+	//碰到右边界
+	else if (ball.getX() + ball.getWidth() > width())
+	{
+		ball.setX(width() - ball.getWidth());
+		ball.setDx(ball.getDx()*-1);
+	}
+	//碰到上边界
+	else if (ball.getY() < 0)
+	{
+		ball.setY(0);
+		ball.setDy(ball.getDy()*-1);
+	}
+
+	//球是否和挡板碰撞
+	if (isCrash(ball, paddle))
+	{
+		updateBallDxy(paddle);
+	}
+
+	//球是否和砖块碰撞
+	for (auto &vector : bricksVector)
+	{
+		for (Brick &brick : vector)
+		{
+			if (isCrash(ball, brick) && !brick.getIsCollided())
+			{
+				updateBallDxy(brick);
+				brick.setIsCollided(true);
 				nowScore += difficulty + 1;
-				scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
 				goto outside;
 			}
 		}
 	}
 outside:;
 
-	//判断是否游戏结束
+	//游戏是否结束
 	//球落地
-	if (ballLabel->y() + ballLabel->height() >= height())
+	if (ball.getY() + ball.getHeight() >= height())
 	{
-		//停止一切
-		paddleMoveLeftTimer.stop();
-		paddleMoveRightTimer.stop();
-		ballMoveTimer.stop();
+		//停止更新画面
+		timer->stop();
+
 		//游戏结束之后如果为最高分的话，更新最高分和最高分保持者
 		if (nowScore > Config::getInstance()->getHighestScore())
 		{
@@ -223,95 +235,101 @@ outside:;
 		//否则重新再来一局，重新初始化所有游戏元素内容
 		else
 		{
-			//重新摆放挡板位置
-			paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
-			//重新摆放球的位置并重新设定球的移动方向
-			ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-			ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
+			//重新设置挡板状态
+			paddle.setX(width() / 2 - paddle.getWidth() / 2);
+			paddle.setY(height() - paddle.getHeight() - 10);
+			paddle.setIsLefting(false);
+			paddle.setIsRighting(false);
+
+			//重新设置球的状态
+			ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
+			ball.setY(paddle.getY() - ball.getHeight() - 10);
+			ball.setDx(this->difficulty * 2 + 5);
+			ball.setDy(this->difficulty * 2 + 5);
+			ball.setIsMoving(false);
+
 			//重新初始化分数
 			nowScore = 0;
-			scoreLabel->setText(tr(u8"分数：%1").arg(nowScore));
+
 			//重新显示所有的砖块
-			for (int i = 0; i < blockLabelVector.size(); i++)
+			for (auto &vector : bricksVector)
 			{
-				for (int j = 0; j < blockLabelVector[i].size(); j++)
+				for (Brick &brick : vector)
 				{
-					blockLabelVector[i][j]->show();
+					brick.setIsCollided(false);
 				}
 			}
+
+			//开始更新画面
+			timer->start();
 		}
 	}
 	//砖块打完
 	else
 	{
 		//对每个砖块遍历判断，如果有砖块显示（没被打）的话就跳出去，否则进行砖块打完之后的行为
-		for (int i = 0; i < blockLabelVector.size(); i++)
+		for (auto &vector : bricksVector)
 		{
-			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			for (Brick &brick : vector)
 			{
-				if (!blockLabelVector[i][j]->isHidden())
+				if (!brick.getIsCollided())
 				{
 					goto judgeEnd;
 				}
 			}
 		}
+
 		//除了分数不重新刷新之外，其他的重新刷新重来一遍，直到某一次球落地为止，此间的分数一直累加
-		//重新摆放挡板位置
-		paddleLabel->move(width() / 2 - paddleLabel->width() / 2, height() - paddleLabel->height() - 10);
-		//重新摆放球的位置并重新设定球的移动方向
-		ballLabel->move(paddleLabel->x() + paddleLabel->width() / 2 - ballLabel->width() / 2, paddleLabel->y() - ballLabel->height() - 10);
-		ballMoveDxy = { static_cast<int>(difficulty) * 2 + 5 ,static_cast<int>(difficulty) * 2 + 5 };
+		//重新设置挡板状态
+		paddle.setX(width() / 2 - paddle.getWidth() / 2);
+		paddle.setY(height() - paddle.getHeight() - 10);
+		paddle.setIsLefting(false);
+		paddle.setIsRighting(false);
+
+		//重新设置球的状态
+		ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
+		ball.setY(paddle.getY() - ball.getHeight() - 10);
+		ball.setDx(this->difficulty * 2 + 5);
+		ball.setDy(this->difficulty * 2 + 5);
+		ball.setIsMoving(false);
+
 		//重新显示所有的砖块
-		for (int i = 0; i < blockLabelVector.size(); i++)
+		for (auto &vector : bricksVector)
 		{
-			for (int j = 0; j < blockLabelVector[i].size(); j++)
+			for (Brick &brick : vector)
 			{
-				blockLabelVector[i][j]->show();
+				brick.setIsCollided(false);
 			}
 		}
 	}
 judgeEnd:;
+
+	//绘制
+	update();
 }
 
-void GameScene::paddleMove(int distance)
+bool GameScene::isCrash(Sprite s1, Sprite s2) const
 {
-	int x = paddleLabel->x(); //获取挡板当前左下角的x坐标
-	x += distance; //坐标移动
-	//判定是否超出地图范围
-	if (x < 0)
-	{
-		x = 0;
-	}
-	else if (x > width() - paddleLabel->width())
-	{
-		x = width() - paddleLabel->width();
-	}
-	//移动
-	paddleLabel->move(x, paddleLabel->y());
+	return s1.getX() >= s2.getX() - s1.getWidth() && s1.getX() <= s2.getX() + s2.getWidth() && s1.getY() >= s2.getY() - s1.getHeight() && s1.getY() <= s2.getY() + s2.getHeight();
 }
 
-bool GameScene::isCrash(QLabel * l1, QLabel * l2)
-{
-	return l1->x() >= l2->x() - l1->width() && l1->x() <= l2->x() + l2->width() && l1->y() >= l2->y() - l1->height() && l1->y() <= l2->y() + l2->height();
-}
-
-void GameScene::updateBallMoveDxy(QLabel * sth)
+void GameScene::updateBallDxy(Sprite s)
 {
 	//获取球和物体相撞的时候的共同的宽和高
-	int overWidth = ((ballLabel->x() + ballLabel->width() < sth->x() + sth->width()) ? (ballLabel->x() + ballLabel->width()) : (sth->x() + sth->width())) - (ballLabel->x() > sth->x() ? ballLabel->x() : sth->x());
-	int overHeight = ((ballLabel->y() + ballLabel->height() < sth->y() + sth->height()) ? (ballLabel->y() + ballLabel->height()) : (sth->y() + sth->height())) - (ballLabel->y() > sth->y() ? ballLabel->y() : sth->y());
+	int overWidth = ((ball.getX() + ball.getWidth() < s.getX() + s.getWidth()) ? (ball.getX() + ball.getWidth()) : (s.getX() + s.getWidth())) - (ball.getX() > s.getX() ? ball.getX() : s.getX());
+	int overHeight = ((ball.getY() + ball.getHeight() < s.getY() + s.getHeight()) ? (ball.getY() + ball.getHeight()) : (s.getY() + s.getHeight())) - (ball.getY() > s.getY() ? ball.getY() : s.getY());
 	//判定哪边更长，如果是宽说明球的趋势应是从上或者下相撞的，否则应该是左右相撞，极端情况则完全反射
 	if (overWidth > overHeight)
 	{
-		ballMoveDxy.second *= -1;
+		ball.setDy(ball.getDy()*-1);
 	}
 	else if (overWidth < overHeight)
 	{
-		ballMoveDxy.first *= -1;
+		ball.setDx(ball.getDx()*-1);
 	}
 	else
 	{
-		ballMoveDxy.first *= -1;
-		ballMoveDxy.second *= -1;
+		ball.setDx(ball.getDx()*-1);
+		ball.setDy(ball.getDy()*-1);
 	}
 }

@@ -16,6 +16,7 @@ public:
 
 	private slots:
 	void themeButtonClicked(); //单击主题选择按钮
+	void FpsButtonClicked(); //单击帧数选择按钮
 	void returnToStartSceneButtonClicked(); //单击返回开始界面按钮
 };
 

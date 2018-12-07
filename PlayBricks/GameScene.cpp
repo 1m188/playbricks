@@ -33,10 +33,10 @@ void GameScene::init(int difficulty)
 	this->difficulty = difficulty % 3; //防止传入的参数超过限制
 
 	//挡板初始化
-	paddle = Paddle(width() / 2 - paddlePixmap.width() / 2, height() - paddlePixmap.height() - 10, paddlePixmap.width(), paddlePixmap.height(), paddlePixmap, 6 - this->difficulty, false, false);
+	paddle = Paddle(width() / 2 - paddlePixmap.width() / 2, height() - paddlePixmap.height() - 10, paddlePixmap.width(), paddlePixmap.height(), paddlePixmap, 15 - this->difficulty * 2, false, false);
 
 	//球初始化
-	ball = Ball(paddle.getX() + paddle.getWidth() / 2 - ballPixmap.width() / 2, paddle.getY() - ballPixmap.height() - 10, ballPixmap.width(), ballPixmap.height(), ballPixmap, this->difficulty * 2 + 5, this->difficulty * 2 + 5, false);
+	ball = Ball(paddle.getX() + paddle.getWidth() / 2 - ballPixmap.width() / 2, paddle.getY() - ballPixmap.height() - 10, ballPixmap.width(), ballPixmap.height(), ballPixmap, this->difficulty * 3 + 5, this->difficulty * 3 + 5, false);
 
 	//得分初始化
 	nowScore = 0;
@@ -244,8 +244,8 @@ outside:;
 			//重新设置球的状态
 			ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
 			ball.setY(paddle.getY() - ball.getHeight() - 10);
-			ball.setDx(this->difficulty * 2 + 5);
-			ball.setDy(this->difficulty * 2 + 5);
+			ball.setDx(this->difficulty * 3 + 5);
+			ball.setDy(this->difficulty * 3 + 5);
 			ball.setIsMoving(false);
 
 			//重新初始化分数
@@ -289,8 +289,8 @@ outside:;
 		//重新设置球的状态
 		ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
 		ball.setY(paddle.getY() - ball.getHeight() - 10);
-		ball.setDx(this->difficulty * 2 + 5);
-		ball.setDy(this->difficulty * 2 + 5);
+		ball.setDx(this->difficulty * 3 + 5);
+		ball.setDy(this->difficulty * 3 + 5);
 		ball.setIsMoving(false);
 
 		//重新显示所有的砖块

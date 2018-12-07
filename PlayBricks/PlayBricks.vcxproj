@@ -83,7 +83,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="DifficultyChooseScene.cpp" />
     <ClCompile Include="Director.cpp" />
@@ -166,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
-    <ClInclude Include="Brick.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Sprite.h" />
     <CustomBuild Include="ThemeChooseScene.h">

@@ -153,6 +153,9 @@
     <ClCompile Include="Paddle.cpp">
       <Filter>精灵\挡板</Filter>
     </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>精灵\球</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="Paddle.h">
       <Filter>精灵\挡板</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>精灵\球</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

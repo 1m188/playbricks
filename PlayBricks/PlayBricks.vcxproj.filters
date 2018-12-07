@@ -51,6 +51,18 @@
     <Filter Include="场景\主题选择场景">
       <UniqueIdentifier>{e685955a-05c0-49c1-8bee-69da88f48a2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="精灵">
+      <UniqueIdentifier>{a885683e-ae0c-4e94-8aea-34ef1c838eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="精灵\挡板">
+      <UniqueIdentifier>{727c823d-9e18-4869-8f47-48f2e631233c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="精灵\球">
+      <UniqueIdentifier>{2ce21020-933f-4c84-8f43-1fe743ebb3a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="精灵\砖块">
+      <UniqueIdentifier>{fee5739b-a1df-436e-8334-5f9b7c9f93a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -135,6 +147,9 @@
     <ClCompile Include="ThemeChooseScene.cpp">
       <Filter>场景\主题选择场景</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>精灵</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -171,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>设置</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>精灵</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

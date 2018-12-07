@@ -144,6 +144,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SettingScene.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StartScene.cpp" />
     <ClCompile Include="ThemeChooseScene.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -161,6 +162,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sprite.h" />
     <CustomBuild Include="ThemeChooseScene.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ThemeChooseScene.h...</Message>

@@ -142,6 +142,7 @@
     <ClCompile Include="HighestScoreScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SettingScene.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -162,6 +163,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Paddle.h" />
     <ClInclude Include="Sprite.h" />
     <CustomBuild Include="ThemeChooseScene.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

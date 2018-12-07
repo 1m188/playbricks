@@ -150,6 +150,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>精灵</Filter>
     </ClCompile>
+    <ClCompile Include="Paddle.cpp">
+      <Filter>精灵\挡板</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -189,6 +192,9 @@
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>精灵</Filter>
+    </ClInclude>
+    <ClInclude Include="Paddle.h">
+      <Filter>精灵\挡板</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

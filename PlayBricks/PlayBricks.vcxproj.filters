@@ -156,6 +156,9 @@
     <ClCompile Include="Ball.cpp">
       <Filter>精灵\球</Filter>
     </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>精灵\砖块</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -201,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="Ball.h">
       <Filter>精灵\球</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>精灵\砖块</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

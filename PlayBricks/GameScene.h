@@ -26,6 +26,7 @@ private:
 
 	int difficulty; //难度系数
 	int nowScore; //当前得分
+	int scoreTextHeight; //分数的文本高度
 
 	bool isCrash(Sprite s1, Sprite s2) const; //是否碰撞
 	void updateBallDxy(Sprite s); //通过原来的每次移动距离和与球相撞的物体来更新球的下一步移动方向
@@ -40,7 +41,7 @@ public:
 	void keyReleaseEvent(QKeyEvent *event) override; //重写释放按键事件
 
 protected:
-	void paintEvent(QPaintEvent *event) override;
+	void paintEvent(QPaintEvent *event) override; //重写的绘制事件
 
 	private slots:
 	void gameCycle(); //游戏循环

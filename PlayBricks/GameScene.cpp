@@ -41,13 +41,16 @@ void GameScene::init(int difficulty)
 	//得分初始化
 	nowScore = 0;
 
+	//分数的文本高度初始化
+	scoreTextHeight = 20;
+
 	//砖块初始化
 	for (int i = 0; i < this->difficulty * 4 + 10; i++)
 	{
 		bricksVector.append(QVector<Brick>{});
 		for (int j = 0; j < 16; j++)
 		{
-			Brick brick(j*bricksImageVector.at(this->difficulty).width(), i*bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty).width(), bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty), false);
+			Brick brick(j*bricksImageVector.at(this->difficulty).width(), scoreTextHeight + i*bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty).width(), bricksImageVector.at(this->difficulty).height(), bricksImageVector.at(this->difficulty), false);
 			bricksVector[bricksVector.size() - 1].append(brick);
 		}
 	}
@@ -133,6 +136,11 @@ void GameScene::paintEvent(QPaintEvent *event)
 		}
 	}
 
+	//绘制分数
+	painter->setPen(Qt::red);
+	painter->setFont(QFont(u8"微软雅黑", 12));
+	painter->drawText(0, 0, width(), scoreTextHeight, Qt::AlignCenter, QString(u8"分数：%1").arg(nowScore));
+
 	painter->end();
 
 	Scene::paintEvent(event);
@@ -182,9 +190,9 @@ void GameScene::gameCycle()
 		ball.setDx(ball.getDx()*-1);
 	}
 	//碰到上边界
-	else if (ball.getY() < 0)
+	else if (ball.getY() < scoreTextHeight)
 	{
-		ball.setY(0);
+		ball.setY(scoreTextHeight);
 		ball.setDy(ball.getDy()*-1);
 	}
 

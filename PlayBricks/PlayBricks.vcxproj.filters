@@ -63,6 +63,9 @@
     <Filter Include="精灵\砖块">
       <UniqueIdentifier>{fee5739b-a1df-436e-8334-5f9b7c9f93a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="场景\帧数选择场景">
+      <UniqueIdentifier>{2bf96bd3-a98f-4fc2-857e-6c1e2a518576}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -159,6 +162,15 @@
     <ClCompile Include="Brick.cpp">
       <Filter>精灵\砖块</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FpsChooseScene.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FpsChooseScene.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="FpsChooseScene.cpp">
+      <Filter>场景\帧数选择场景</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Window.h">
@@ -187,6 +199,9 @@
     </CustomBuild>
     <CustomBuild Include="ThemeChooseScene.h">
       <Filter>场景\主题选择场景</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FpsChooseScene.h">
+      <Filter>场景\帧数选择场景</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

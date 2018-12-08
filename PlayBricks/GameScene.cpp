@@ -39,7 +39,7 @@ void GameScene::init(int difficulty)
 	scoreTextHeight = 20;
 
 	//帧数初始化
-	fps = 30;
+	fps = Config::getInstance()->getFps();
 
 	//挡板初始化
 	paddle = Paddle(width() / 2 - paddlePixmap.width() / 2, height() - paddlePixmap.height() - 10, paddlePixmap.width(), paddlePixmap.height(), paddlePixmap, (15 - this->difficulty * 2) * 30 / fps, false, false);

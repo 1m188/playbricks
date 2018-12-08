@@ -29,6 +29,7 @@ void Config::init()
 	highestScore = 0;
 	highestScorePlayer = "None";
 	themeResourceUrl = ":/theme/Resources/theme/default.qss";
+	fps = 30;
 
 	QFile f("config.ini");
 	//如果文件存在的话则读取相关设置
@@ -48,6 +49,19 @@ void Config::init()
 		temp = f.readLine();
 		temp.chop(1);
 		themeResourceUrl = temp;
+		//读取FPS
+		temp = f.readLine();
+		temp.chop(1);
+		fps = temp.toInt();
+		//控制读取进来的fps范围
+		if (fps > 60)
+		{
+			fps = 60;
+		}
+		else if (fps < 30)
+		{
+			fps = 30;
+		}
 		f.close();
 	}
 	//否则创建设置文件并且使用默认的初始化设置进行游戏
@@ -65,11 +79,17 @@ void Config::uninit()
 {
 	QFile f("config.ini");
 	f.open(QIODevice::WriteOnly | QIODevice::Truncate);
-	f.write(QString::number(highestScore).toStdString().c_str()); //写入最高分
+	//写入最高分
+	f.write(QString::number(highestScore).toStdString().c_str());
 	f.write("\n");
-	f.write(highestScorePlayer.toStdString().c_str()); //写入最高分保持者
+	//写入最高分保持者
+	f.write(highestScorePlayer.toStdString().c_str());
 	f.write("\n");
-	f.write(themeResourceUrl.toStdString().c_str()); //写入当前主题资源url
+	//写入当前主题资源url
+	f.write(themeResourceUrl.toStdString().c_str());
+	f.write("\n");
+	//写入当前FPS值
+	f.write(QString::number(fps).toStdString().c_str());
 	f.write("\n");
 	f.close();
 }
@@ -88,7 +108,7 @@ void Config::setHighestScore(int highestScore)
 	this->highestScore = highestScore;
 }
 
-int Config::getHighestScore()
+const int Config::getHighestScore() const
 {
 	return highestScore;
 }
@@ -98,7 +118,17 @@ void Config::setHighestScorePlayer(QString highestScorePlayer)
 	this->highestScorePlayer = highestScorePlayer;
 }
 
-QString Config::getHighestScorePlayer()
+const QString Config::getHighestScorePlayer() const
 {
 	return highestScorePlayer;
+}
+
+void Config::setFps(int fps)
+{
+	this->fps = fps;
+}
+
+const int Config::getFps() const
+{
+	return fps;
 }

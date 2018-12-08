@@ -23,7 +23,7 @@ void HighestScoreScene::init()
 	QLabel *infoLabel = new QLabel(this);
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setFont(QFont(u8"微软雅黑", 40));
-	infoLabel->setText(tr(u8"最 高 分"));
+	infoLabel->setText(tr(u8"最  高  分"));
 
 	QLabel *highestScoreLabel = new QLabel(this);
 	highestScoreLabel->setAlignment(Qt::AlignCenter);

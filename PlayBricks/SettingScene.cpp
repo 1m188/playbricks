@@ -24,7 +24,7 @@ void SettingScene::init()
 	QLabel *infoLabel = new QLabel(this);
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setFont(QFont(u8"Î¢ÈíÑÅºÚ", 40));
-	infoLabel->setText(tr(u8"Éè ÖÃ"));
+	infoLabel->setText(tr(u8"Éè  ÖÃ"));
 
 	QPushButton *themeButton = new QPushButton(this);
 	themeButton->setFont(QFont(u8"Î¢ÈíÑÅºÚ", 15));

@@ -24,7 +24,7 @@ void FpsChooseScene::init()
 	QLabel *infoLabel = new QLabel(this);
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setFont(QFont(u8"Î¢ÈíÑÅºÚ", 40));
-	infoLabel->setText(tr(u8"Ö¡ Êý Ñ¡ Ôñ"));
+	infoLabel->setText(tr(u8"Ö¡  Êý  Ñ¡  Ôñ"));
 
 	QLabel *fpsLabel = new QLabel(this);
 	fpsLabel->setAlignment(Qt::AlignCenter);

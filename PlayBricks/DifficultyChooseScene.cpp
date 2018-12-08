@@ -23,7 +23,7 @@ void DifficultyChooseScene::init()
 	QLabel *infoLabel = new QLabel(this);
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setFont(QFont(u8"微软雅黑", 40));
-	infoLabel->setText(tr(u8"难 度 选 择"));
+	infoLabel->setText(tr(u8"难  度  选  择"));
 
 	QPushButton *easyButton = new QPushButton(this);
 	easyButton->setObjectName("0");

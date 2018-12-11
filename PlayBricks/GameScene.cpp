@@ -158,28 +158,7 @@ void GameScene::gameCycle()
 	//球移动
 	if (ball.getIsMoving())
 	{
-		ball.setX(ball.getX() + ball.getDx());
-		ball.setY(ball.getY() + ball.getDy());
-	}
-
-	//球碰到地图边界
-	//碰到左边界
-	if (ball.getX() < 0)
-	{
-		ball.setX(0);
-		ball.setDx(ball.getDx()*-1);
-	}
-	//碰到右边界
-	else if (ball.getX() + ball.getWidth() > width())
-	{
-		ball.setX(width() - ball.getWidth());
-		ball.setDx(ball.getDx()*-1);
-	}
-	//碰到上边界
-	else if (ball.getY() < scoreTextHeight)
-	{
-		ball.setY(scoreTextHeight);
-		ball.setDy(ball.getDy()*-1);
+		ball.move(0, width(), scoreTextHeight);
 	}
 
 	//球是否和挡板碰撞

@@ -14,3 +14,26 @@ Ball::~Ball()
 {
 
 }
+
+void Ball::move(int left, int right, int up)
+{
+	setX(getX() + dx);
+	setY(getY() + dy);
+
+	//ײǽ
+	if (getX() < left)
+	{
+		setX(left);
+		dx *= -1;
+	}
+	else if (getX() + getWidth() > right)
+	{
+		setX(right - getWidth());
+		dx *= -1;
+	}
+	if (getY() < up)
+	{
+		setY(up);
+		dy *= -1;
+	}
+}

@@ -28,6 +28,9 @@ public:
 	//获取/设置是否在移动
 	const int getIsMoving() const { return isMoving; }
 	void setIsMoving(bool isMoving) { this->isMoving = isMoving; }
+
+	//球的移动，传入左右上极限边界
+	void move(int left, int right, int up);
 };
 
 #endif // BALL_H

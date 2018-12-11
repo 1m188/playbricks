@@ -14,3 +14,26 @@ Paddle::~Paddle()
 {
 
 }
+
+void Paddle::move(int left, int right)
+{
+	//×óÓÒÒÆ¶¯
+	if (isLefting)
+	{
+		setX(getX() - dx);
+	}
+	if (isRighting)
+	{
+		setX(getX() + dx);
+	}
+
+	//×²Ç½
+	if (getX() < left)
+	{
+		setX(left);
+	}
+	else if (getX() + getWidth() > right)
+	{
+		setX(right - getWidth());
+	}
+}

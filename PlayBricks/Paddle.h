@@ -28,6 +28,9 @@ public:
 	void setIsLefting(bool isLefting) { this->isLefting = isLefting; }
 	const bool getIsRighting() const { return isRighting; }
 	void setIsRighting(bool isRighting) { this->isRighting = isRighting; }
+
+	//挡板移动，传入左右极限边界
+	void move(int left, int right);
 };
 
 #endif // PADDLE_H

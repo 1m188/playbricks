@@ -153,24 +153,7 @@ void GameScene::gameCycle()
 {
 	//º∆À„◊¥Ã¨
 	//µ≤∞Â“∆∂Ø
-	if (paddle.getIsLefting())
-	{
-		paddle.setX(paddle.getX() - paddle.getDx());
-	}
-	if (paddle.getIsRighting())
-	{
-		paddle.setX(paddle.getX() + paddle.getDx());
-	}
-
-	//µ≤∞Â≈ˆµΩµÿÕº±ﬂΩÁ
-	if (paddle.getX() < 0)
-	{
-		paddle.setX(0);
-	}
-	else if (paddle.getX() + paddle.getWidth() > width())
-	{
-		paddle.setX(width() - paddle.getWidth());
-	}
+	paddle.move(0, width());
 
 	//«Ú“∆∂Ø
 	if (ball.getIsMoving())

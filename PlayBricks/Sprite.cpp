@@ -14,3 +14,8 @@ Sprite::~Sprite()
 {
 
 }
+
+bool Sprite::isCollided(Sprite s) const
+{
+	return x >= s.getX() - width && x <= s.getX() + s.getWidth() && y >= s.getY() - height && y <= s.getY() + s.getHeight();
+}

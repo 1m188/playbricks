@@ -29,7 +29,6 @@ private:
 	int scoreTextHeight; //分数的文本高度
 	int fps; //帧数
 
-	bool isCrash(Sprite s1, Sprite s2) const; //是否碰撞
 	void updateBallDxy(Sprite s); //通过原来的每次移动距离和与球相撞的物体来更新球的下一步移动方向
 
 public:

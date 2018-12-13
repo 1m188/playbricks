@@ -38,6 +38,9 @@ public:
 	//»ñÈ¡/ÉèÖÃÍ¼Æ¬
 	const QPixmap getImage() const { return image; }
 	void setImage(QPixmap image) { this->image = image; }
+
+	//Åö×²¼ì²â
+	bool isCollided(Sprite s) const;
 };
 
 #endif // SPRITE_H

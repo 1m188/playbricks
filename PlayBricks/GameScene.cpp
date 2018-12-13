@@ -162,7 +162,7 @@ void GameScene::gameCycle()
 	}
 
 	//ÇòÊÇ·ñºÍµ²°åÅö×²
-	if (isCrash(ball, paddle))
+	if (ball.isCollided(paddle))
 	{
 		updateBallDxy(paddle);
 	}
@@ -172,7 +172,7 @@ void GameScene::gameCycle()
 	{
 		for (Brick &brick : vector)
 		{
-			if (isCrash(ball, brick) && !brick.getIsCollided())
+			if (ball.isCollided(brick) && !brick.getIsCollided())
 			{
 				updateBallDxy(brick);
 				brick.setIsCollided(true);
@@ -279,11 +279,6 @@ judgeEnd:;
 
 	//»æÖÆ
 	update();
-}
-
-bool GameScene::isCrash(Sprite s1, Sprite s2) const
-{
-	return s1.getX() >= s2.getX() - s1.getWidth() && s1.getX() <= s2.getX() + s2.getWidth() && s1.getY() >= s2.getY() - s1.getHeight() && s1.getY() <= s2.getY() + s2.getHeight();
 }
 
 void GameScene::updateBallDxy(Sprite s)

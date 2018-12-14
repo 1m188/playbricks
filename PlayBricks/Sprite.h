@@ -24,19 +24,19 @@ public:
 	virtual ~Sprite();
 
 	//获取/设置坐标
-	const int getX() const { return x; }
+	int getX() const { return x; }
 	void setX(int x) { this->x = x; }
-	const int getY() const { return y; }
+	int getY() const { return y; }
 	void setY(int y) { this->y = y; }
 
 	//获取/设置宽高
-	const int getWidth() const { return width; }
+	int getWidth() const { return width; }
 	void setWidth(int width) { this->width = width; }
-	const int getHeight() const { return height; }
+	int getHeight() const { return height; }
 	void setHeight(int height) { this->height = height; }
 
 	//获取/设置图片
-	const QPixmap getImage() const { return image; }
+	QPixmap getImage() const { return image; }
 	void setImage(QPixmap image) { this->image = image; }
 
 	//碰撞检测

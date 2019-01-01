@@ -1,8 +1,10 @@
-#include "Config.h"
+ï»¿#include "Config.h"
 #include "QFile"
 #include "QApplication"
+#include "QJsonObject"
+#include "QJsonDocument"
 
-Config *Config::instance = nullptr; //³õÊ¼»¯µ¥ÀıÖ¸Õë
+Config *Config::instance = nullptr; //åˆå§‹åŒ–å•ä¾‹æŒ‡é’ˆ
 
 Config::Config()
 {
@@ -25,35 +27,29 @@ Config * Config::getInstance()
 
 void Config::init()
 {
-	//³õÊ¼»¯Ä¬ÈÏÉèÖÃ
+	//åˆå§‹åŒ–é»˜è®¤è®¾ç½®
 	highestScore = 0;
 	highestScorePlayer = "None";
 	themeResourceUrl = ":/theme/Resources/theme/default.qss";
 	fps = 30;
 
 	QFile f("config.ini");
-	//Èç¹ûÎÄ¼ş´æÔÚµÄ»°Ôò¶ÁÈ¡Ïà¹ØÉèÖÃ
+	//å¦‚æœæ–‡ä»¶å­˜åœ¨çš„è¯åˆ™è¯»å–ç›¸å…³è®¾ç½®
 	if (f.exists())
 	{
+		//ä»æ–‡ä»¶ä¸­è¯»å–json
 		f.open(QIODevice::ReadOnly);
-		QString temp;
-		//¶ÁÈ¡×î¸ß·Ö
-		temp = f.readLine();
-		temp.chop(1);
-		highestScore = temp.toInt();
-		//¶ÁÈ¡×î¸ß·Ö±£³ÖÕß
-		temp = f.readLine();
-		temp.chop(1);
-		highestScorePlayer = temp;
-		//¶ÁÈ¡µ±Ç°Ö÷Ìâ×ÊÔ´url
-		temp = f.readLine();
-		temp.chop(1);
-		themeResourceUrl = temp;
-		//¶ÁÈ¡FPS
-		temp = f.readLine();
-		temp.chop(1);
-		fps = temp.toInt();
-		//¿ØÖÆ¶ÁÈ¡½øÀ´µÄfps·¶Î§
+		QByteArray temp = f.readAll();
+		f.close();
+
+		//è§£æjson
+		QJsonDocument jsonDocument = QJsonDocument::fromJson(temp);
+		QJsonObject json = jsonDocument.object();
+		highestScore = json.value("HighestScore").toInt(); //è¯»å–æœ€é«˜åˆ†
+		highestScorePlayer = json.value("HighestScorePlayer").toString(); //è¯»å–æœ€é«˜åˆ†ä¿æŒè€…
+		themeResourceUrl = json.value("ThemeResourceUrl").toString(); //è¯»å–ä¸»é¢˜èµ„æºæ ·å¼è¡¨ä¿å­˜è·¯å¾„
+		fps = json.value("Fps").toInt(); //è¯»å–å¸§æ•°
+		//æ§åˆ¶è¯»å–è¿›æ¥çš„fpsèŒƒå›´
 		if (fps > 60)
 		{
 			fps = 60;
@@ -62,35 +58,35 @@ void Config::init()
 		{
 			fps = 30;
 		}
-		f.close();
 	}
-	//·ñÔò´´½¨ÉèÖÃÎÄ¼ş²¢ÇÒÊ¹ÓÃÄ¬ÈÏµÄ³õÊ¼»¯ÉèÖÃ½øĞĞÓÎÏ·
+	//å¦åˆ™åˆ›å»ºè®¾ç½®æ–‡ä»¶å¹¶ä¸”ä½¿ç”¨é»˜è®¤çš„åˆå§‹åŒ–è®¾ç½®è¿›è¡Œæ¸¸æˆ
 	else
 	{
 		f.open(QIODevice::WriteOnly);
 		f.close();
 	}
 
-	//¿ªÊ¼µÄÊ±ºòÉèÖÃµ±Ç°Ö÷Ìâ
+	//å¼€å§‹çš„æ—¶å€™è®¾ç½®å½“å‰ä¸»é¢˜
 	setTheme(themeResourceUrl);
 }
 
 void Config::uninit()
 {
+	//jsonæ ¼å¼å†™å…¥
+	QJsonObject json;
+	json.insert("HighestScore", highestScore); //å†™å…¥æœ€é«˜åˆ†
+	json.insert("HighestScorePlayer", highestScorePlayer); //å†™å…¥æœ€é«˜åˆ†ä¿æŒè€…
+	json.insert("ThemeResourceUrl", themeResourceUrl); //å†™å…¥å½“å‰ä¸»é¢˜èµ„æºurl
+	json.insert("Fps", fps); //å†™å…¥å½“å‰FPSå€¼
+
+	QJsonDocument jsonDocument;
+	jsonDocument.setObject(json);
+	QByteArray byteArray = jsonDocument.toJson();
+
+	//å†™å…¥æ–‡ä»¶
 	QFile f("config.ini");
 	f.open(QIODevice::WriteOnly | QIODevice::Truncate);
-	//Ğ´Èë×î¸ß·Ö
-	f.write(QString::number(highestScore).toStdString().c_str());
-	f.write("\n");
-	//Ğ´Èë×î¸ß·Ö±£³ÖÕß
-	f.write(highestScorePlayer.toStdString().c_str());
-	f.write("\n");
-	//Ğ´Èëµ±Ç°Ö÷Ìâ×ÊÔ´url
-	f.write(themeResourceUrl.toStdString().c_str());
-	f.write("\n");
-	//Ğ´Èëµ±Ç°FPSÖµ
-	f.write(QString::number(fps).toStdString().c_str());
-	f.write("\n");
+	f.write(byteArray);
 	f.close();
 }
 

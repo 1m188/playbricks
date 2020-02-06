@@ -1,4 +1,4 @@
-﻿#include "Ball.h"
+#include "Ball.h"
 
 Ball::Ball() : Sprite(), dx(0), dy(0), isMoving(false)
 {

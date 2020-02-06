@@ -1,4 +1,4 @@
-﻿#include "DifficultyChooseScene.h"
+#include "DifficultyChooseScene.h"
 #include "Director.h"
 #include "StartScene.h"
 #include "GameScene.h"

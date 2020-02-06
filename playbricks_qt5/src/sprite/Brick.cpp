@@ -1,4 +1,4 @@
-﻿#include "Brick.h"
+#include "Brick.h"
 
 Brick::Brick() : Sprite()
 {

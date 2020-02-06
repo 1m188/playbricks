@@ -1,4 +1,4 @@
-﻿#include "QApplication"
+#include "QApplication"
 #include "Director.h"
 #include "Config.h"
 

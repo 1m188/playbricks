@@ -1,4 +1,4 @@
-﻿#include "HighestScoreScene.h"
+#include "HighestScoreScene.h"
 #include "Director.h"
 #include "Config.h"
 #include "StartScene.h"

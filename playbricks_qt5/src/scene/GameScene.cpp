@@ -1,4 +1,4 @@
-﻿#include "GameScene.h"
+#include "GameScene.h"
 #include "Director.h"
 #include "Config.h"
 #include "StartScene.h"

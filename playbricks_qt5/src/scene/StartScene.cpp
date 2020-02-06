@@ -1,4 +1,4 @@
-﻿#include "StartScene.h"
+#include "StartScene.h"
 #include "Director.h"
 #include "DifficultyChooseScene.h"
 #include "HighestScoreScene.h"

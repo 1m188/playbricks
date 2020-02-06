@@ -1,4 +1,4 @@
-﻿#include "Sprite.h"
+#include "Sprite.h"
 
 Sprite::Sprite() : Sprite(0, 0, 0, 0, QPixmap())
 {

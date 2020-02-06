@@ -1,4 +1,4 @@
-﻿#include "Director.h"
+#include "Director.h"
 
 Director *Director::instance = nullptr; // 初始化单例指针
 

@@ -1,4 +1,4 @@
-﻿#include "Paddle.h"
+#include "Paddle.h"
 
 Paddle::Paddle() : Sprite(), dx(0), isLefting(false), isRighting(false)
 {

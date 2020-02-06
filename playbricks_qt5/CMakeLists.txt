@@ -27,5 +27,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:DEBUG> $<$<
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
 
 if(WIN32)
+    target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "/subsystem:windows /entry:mainCRTStartup")
 endif()

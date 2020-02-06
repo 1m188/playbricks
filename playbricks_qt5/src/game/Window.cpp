@@ -1,4 +1,4 @@
-﻿#include "Window.h"
+#include "Window.h"
 #include "Director.h"
 #include "StartScene.h"
 #include "QApplication"

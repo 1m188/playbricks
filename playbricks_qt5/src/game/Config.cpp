@@ -1,4 +1,4 @@
-﻿#include "Config.h"
+#include "Config.h"
 #include "QFile"
 #include "QApplication"
 #include "QJsonObject"

@@ -1,4 +1,4 @@
-﻿#include "SettingScene.h"
+#include "SettingScene.h"
 #include "Director.h"
 #include "StartScene.h"
 #include "ThemeChooseScene.h"

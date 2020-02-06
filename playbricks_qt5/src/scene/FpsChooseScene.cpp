@@ -1,4 +1,4 @@
-﻿#include "FpsChooseScene.h"
+#include "FpsChooseScene.h"
 #include "Director.h"
 #include "Config.h"
 #include "StartScene.h"

@@ -5,11 +5,24 @@ find_package(Qt5 REQUIRED Widgets)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-aux_source_directory(. sources)
+file(GLOB_RECURSE sources src/*.cpp)
 add_executable(${PROJECT_NAME} ${sources})
-target_include_directories(${PROJECT_NAME} PRIVATE ./scene ./sprite ./game)
-file(GLOB srcs ./scene/*.cpp ./sprite/*.cpp ./game/*.cpp)
-target_sources(${PROJECT_NAME} PRIVATE ./playbricks_qt5.qrc ${srcs})
+target_sources(${PROJECT_NAME} PRIVATE res/playbricks_qt5.qrc)
+
+# recurse include path
+function(target_include_directories_recurse target attr root)
+    if(IS_DIRECTORY ${root})
+        target_include_directories(${target} ${attr} ${root})
+    endif()
+    file(GLOB sub_srcs RELATIVE ${root} ${root}/*)
+    foreach(sub ${sub_srcs})
+        if(IS_DIRECTORY ${root}/${sub})
+            target_include_directories_recurse(${target} ${attr} ${root}/${sub})
+        endif()
+    endforeach()
+endfunction()
+target_include_directories_recurse(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:DEBUG> $<$<CONFIG:Release>:RELEASE>)
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
 

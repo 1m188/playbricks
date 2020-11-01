@@ -1,5 +1,5 @@
 # 忽略vscode的配置文件
 .vscode
 
-# 忽略playbricks_qt5生成文件
-playbricks_qt5/build
+# 忽略构建生成文件
+build

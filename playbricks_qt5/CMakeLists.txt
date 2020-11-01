@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 
 file(GLOB_RECURSE sources src/*.cpp)
 add_executable(${PROJECT_NAME} ${sources})
-target_sources(${PROJECT_NAME} PRIVATE res/playbricks_qt5.qrc)
+target_sources(${PROJECT_NAME} PRIVATE playbricks_qt5.qrc)
 
 # recurse include path
 function(target_include_directories_recurse target attr root)

@@ -1,15 +1,15 @@
 <RCC>
-    <qresource prefix="/theme">
+    <qresource prefix="/theme/Resources">
         <file>theme/black.qss</file>
         <file>theme/default.qss</file>
         <file>theme/gray.qss</file>
         <file>theme/yellow.qss</file>
     </qresource>
-    <qresource prefix="/game">
-        <file>asset/ball.png</file>
-        <file>asset/block_blue.png</file>
-        <file>asset/block_green.png</file>
-        <file>asset/block_red.png</file>
-        <file>asset/paddle.png</file>
+    <qresource prefix="/game/Resources/game">
+        <file alias="ball.png">asset/ball.png</file>
+        <file alias="block_blue.png">asset/block_blue.png</file>
+        <file alias="block_green.png">asset/block_green.png</file>
+        <file alias="block_red.png">asset/block_red.png</file>
+        <file alias="paddle.png">asset/paddle.png</file>
     </qresource>
 </RCC>

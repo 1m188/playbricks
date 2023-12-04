@@ -6,10 +6,10 @@
         <file>theme/yellow.qss</file>
     </qresource>
     <qresource prefix="/game">
-        <file>../asset/ball.png</file>
-        <file>../asset/block_blue.png</file>
-        <file>../asset/block_green.png</file>
-        <file>../asset/block_red.png</file>
-        <file>../asset/paddle.png</file>
+        <file>asset/ball.png</file>
+        <file>asset/block_blue.png</file>
+        <file>asset/block_green.png</file>
+        <file>asset/block_red.png</file>
+        <file>asset/paddle.png</file>
     </qresource>
 </RCC>

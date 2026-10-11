@@ -1,0 +1,59 @@
+# 部署网页版打砖块到 GitHub Pages
+#
+# 站点内容来自 web/ 目录（纯静态，无需构建步骤），
+# 部署成功后访问 https://<用户名>.github.io/<仓库名>/ 即可直接游玩。
+#
+# 首次部署说明：
+#   工作流会尝试通过 API 自动启用 Pages（Source: GitHub Actions），
+#   因此权限里额外申请了 administration: write。
+#   如果你的仓库/组织不允许 GITHUB_TOKEN 获得该权限，删除下面 permissions
+#   里的 administration: write，并手动到仓库
+#   Settings → Pages → Build and deployment 把 Source 设为 "GitHub Actions"。
+#   之后的推送会正常自动部署。
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch: # 支持在 Actions 页面手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  administration: write # 供 configure-pages 自动启用 Pages，详见文件头部说明
+
+# 同一时间只保留一次部署，避免并发冲突（后到的运行会排队等待）
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          # Pages 未启用时尝试自动启用（Source: GitHub Actions）
+          enablement: true
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 只上传 web/ 目录作为站点根，Qt/C++ 源码不进入站点
+          path: web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

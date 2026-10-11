@@ -4,12 +4,10 @@
 # 部署成功后访问 https://<用户名>.github.io/<仓库名>/ 即可直接游玩。
 #
 # 首次部署说明：
-#   工作流会尝试通过 API 自动启用 Pages（Source: GitHub Actions），
-#   因此权限里额外申请了 administration: write。
-#   如果你的仓库/组织不允许 GITHUB_TOKEN 获得该权限，删除下面 permissions
-#   里的 administration: write，并手动到仓库
-#   Settings → Pages → Build and deployment 把 Source 设为 "GitHub Actions"。
-#   之后的推送会正常自动部署。
+#   Configure Pages 步骤会尝试通过 API 自动启用 Pages（Source: GitHub Actions）。
+#   若你的仓库/组织策略不允许自动启用（表现为 Configure Pages 或 Deploy 步骤报错），
+#   手动到仓库 Settings → Pages → Build and deployment 把 Source 设为
+#   "GitHub Actions"，然后在 Actions 页面手动重跑即可，仅需设置一次。
 
 name: Deploy GitHub Pages
 
@@ -25,7 +23,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  administration: write # 供 configure-pages 自动启用 Pages，详见文件头部说明
 
 # 同一时间只保留一次部署，避免并发冲突（后到的运行会排队等待）
 concurrency:

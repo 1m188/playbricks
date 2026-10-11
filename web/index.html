@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打砖块</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-default">
+
+  <!-- 开始场景（对应 StartScene） -->
+  <section id="scene-start" class="scene">
+    <h1 class="scene-title">打  砖  块</h1>
+    <div class="menu-buttons">
+      <button id="btn-start-new-game" class="menu-button">新游戏</button>
+      <button id="btn-start-highest-score" class="menu-button">最高分</button>
+      <button id="btn-start-setting" class="menu-button">设置</button>
+      <button id="btn-start-exit" class="menu-button">退出</button>
+    </div>
+  </section>
+
+  <!-- 难度选择场景（对应 DifficultyChooseScene） -->
+  <section id="scene-difficulty" class="scene hidden">
+    <h1 class="scene-title">难  度  选  择</h1>
+    <div class="menu-buttons">
+      <button class="menu-button difficulty-button" data-difficulty="0">简单</button>
+      <button class="menu-button difficulty-button" data-difficulty="1">中等</button>
+      <button class="menu-button difficulty-button" data-difficulty="2">困难</button>
+      <button class="menu-button" data-target="scene-start">返回开始界面</button>
+    </div>
+  </section>
+
+  <!-- 设置场景（对应 SettingScene） -->
+  <section id="scene-settings" class="scene hidden">
+    <h1 class="scene-title">设  置</h1>
+    <div class="menu-buttons">
+      <button id="btn-settings-theme" class="menu-button">主题选择</button>
+      <button id="btn-settings-fps" class="menu-button">帧数选择</button>
+      <button class="menu-button" data-target="scene-start">返回开始界面</button>
+    </div>
+  </section>
+
+  <!-- 主题选择场景（对应 ThemeChooseScene） -->
+  <section id="scene-theme" class="scene hidden">
+    <h1 class="scene-title">主  题  选  择</h1>
+    <div class="menu-buttons">
+      <button class="menu-button theme-button" data-theme="default">默认</button>
+      <button class="menu-button theme-button" data-theme="black">酷炫黑</button>
+      <button class="menu-button theme-button" data-theme="gray">金属灰</button>
+      <button class="menu-button theme-button" data-theme="yellow">暖心黄</button>
+      <button class="menu-button" data-target="scene-start">返回开始界面</button>
+    </div>
+  </section>
+
+  <!-- 帧数选择场景（对应 FpsChooseScene） -->
+  <section id="scene-fps" class="scene hidden">
+    <h1 class="scene-title">帧  数  选  择</h1>
+    <div class="fps-row">
+      <span class="fps-label">FPS</span>
+      <input id="fps-slider" type="range" min="30" max="60" step="1" value="30">
+      <span id="fps-value" class="fps-value">30</span>
+    </div>
+    <div class="menu-buttons">
+      <button class="menu-button" data-target="scene-start">返回开始界面</button>
+    </div>
+  </section>
+
+  <!-- 最高分场景（对应 HighestScoreScene） -->
+  <section id="scene-highest" class="scene hidden">
+    <h1 class="scene-title">最  高  分</h1>
+    <p id="highest-score-label" class="highest-score-label">0分     None</p>
+    <div class="menu-buttons">
+      <button class="menu-button" data-target="scene-start">返回开始界面</button>
+    </div>
+  </section>
+
+  <!-- 游戏场景（对应 GameScene，逻辑见 js/game.js） -->
+  <section id="scene-game" class="scene hidden">
+    <canvas id="game-canvas" width="1000" height="940"></canvas>
+    <p class="game-hint">← / → 移动挡板 · 按住空格加速 · 任意键发射</p>
+
+    <!-- 最高分姓名输入弹窗（对应 QInputDialog） -->
+    <div id="dialog-highscore" class="modal-mask hidden">
+      <div class="modal">
+        <p id="dialog-highscore-text" class="modal-text"></p>
+        <input id="dialog-highscore-input" class="modal-input" type="text" maxlength="20">
+        <div class="modal-buttons">
+          <button id="dialog-highscore-ok" class="menu-button">确定</button>
+          <button id="dialog-highscore-cancel" class="menu-button">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游戏结束弹窗（对应 QMessageBox） -->
+    <div id="dialog-gameover" class="modal-mask hidden">
+      <div class="modal">
+        <p id="dialog-gameover-text" class="modal-text"></p>
+        <div class="modal-buttons">
+          <button id="dialog-gameover-yes" class="menu-button">是</button>
+          <button id="dialog-gameover-no" class="menu-button">否</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 退出提示（对应 QApplication::quit） -->
+  <div id="dialog-exit" class="modal-mask hidden">
+    <div class="modal">
+      <p class="modal-text">游戏已退出，你可以关闭此标签页。</p>
+      <div class="modal-buttons">
+        <button id="dialog-exit-back" class="menu-button">返回</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/scenes.js"></script>
+</body>
+</html>

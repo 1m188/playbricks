@@ -1,0 +1,221 @@
+/* playbricks 网页版样式
+ * 四套主题配色对应原版 theme/*.qss：
+ *   default —— Qt 默认浅色（default.qss 为空）
+ *   black   —— black.qss：#222 底 / #BBB 字 / 按下变黄字
+ *   gray    —— gray.qss：#888 底 / 黑字
+ *   yellow  —— yellow.qss：米黄底
+ */
+
+/* ---- 主题变量 ---- */
+body.theme-default {
+  --bg: #f0f0f0;
+  --text: #000000;
+  --button-bg: #f0f0f0;
+  --button-text: #000000;
+  --button-border: #8f8f8f;
+  --button-hover-bg: #e3e3e3;
+  --button-hover-border: #8f8f8f;
+  --button-active-bg: #d5d5d5;
+  --button-active-text: #000000;
+  --muted: #666666;
+}
+
+body.theme-black {
+  --bg: #222222;
+  --text: #bbbbbb;
+  --button-bg: #222222;
+  --button-text: #bbbbbb;
+  --button-border: #333333;
+  --button-hover-bg: #333333;
+  --button-hover-border: #444444;
+  --button-active-bg: #111111;
+  --button-active-text: #ffff00;
+  --muted: #666666;
+}
+
+body.theme-gray {
+  --bg: #888888;
+  --text: #000000;
+  --button-bg: #888888;
+  --button-text: #000000;
+  --button-border: #555555;
+  --button-hover-bg: #999999;
+  --button-hover-border: #555555;
+  --button-active-bg: #333333;
+  --button-active-text: #aaaaaa;
+  --muted: #333333;
+}
+
+body.theme-yellow {
+  --bg: #f5f5dc; /* beige */
+  --text: #000000;
+  --button-bg: #ece7d2;
+  --button-text: #000000;
+  --button-border: #9b9b78;
+  --button-hover-bg: #f1edda;
+  --button-hover-border: #9b9b78;
+  --button-active-bg: #d8d2b6;
+  --button-active-text: #000000;
+  --muted: #6b6b52;
+}
+
+/* ---- 基础 ---- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "微软雅黑", "Microsoft YaHei", "Segoe UI", sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---- 菜单场景布局（对应 QGridLayout：标题在上，按钮竖排居中） ---- */
+.scene {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px;
+}
+
+.scene-title {
+  font-size: 53px; /* QFont 40pt ≈ 53px */
+  font-weight: 400;
+  text-align: center;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 260px;
+}
+
+.menu-button {
+  font-family: inherit;
+  font-size: 20px; /* QFont 15pt ≈ 20px */
+  padding: 8px 16px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--button-border);
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  background-color: var(--button-hover-bg);
+  border-color: var(--button-hover-border);
+}
+
+.menu-button:active {
+  background-color: var(--button-active-bg);
+  color: var(--button-active-text);
+}
+
+/* ---- 帧数选择场景 ---- */
+.fps-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 480px;
+  max-width: 90vw;
+}
+
+.fps-label,
+.fps-value {
+  font-size: 27px; /* QFont 20pt ≈ 27px */
+}
+
+#fps-slider {
+  flex: 1;
+  accent-color: var(--button-border);
+}
+
+/* ---- 最高分场景 ---- */
+.highest-score-label {
+  font-size: 33px; /* QFont 25pt ≈ 33px */
+  white-space: pre; /* 保留原版文案中的连续空格 */
+}
+
+/* ---- 游戏场景 ---- */
+#scene-game {
+  gap: 8px;
+  padding: 12px;
+}
+
+/* 画布内部分辨率固定 1000×940（游戏逻辑坐标不变），
+ * 显示尺寸随窗口等比缩放：宽度取「可用宽度」与「可用高度按 1000/940 反推的宽度」的较小值，
+ * 保证砖块和挡板一屏完整可见、不出现滚动条。
+ * 预留 76px 给提示行 + 间距 + 上下留白；dvh 行为不支持时回退到 vh。 */
+#game-canvas {
+  display: block;
+  width: min(calc(100vw - 40px), calc((100vh - 76px) * 1.0638));
+  width: min(calc(100vw - 40px), calc((100dvh - 76px) * 1.0638));
+  height: auto;
+}
+
+.game-hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---- 弹窗（对应 QInputDialog / QMessageBox） ---- */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--button-border);
+  padding: 28px 32px;
+  min-width: 400px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-text {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.modal-input {
+  font-family: inherit;
+  font-size: 18px;
+  padding: 6px 10px;
+  background: var(--button-bg);
+  color: var(--text);
+  border: 1px solid var(--button-border);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+.modal-buttons .menu-button {
+  min-width: 72px;
+}

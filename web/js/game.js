@@ -78,14 +78,18 @@ const Game = (function () {
         false
       );
 
-      // 砖块初始化：difficulty * 4 + 10 行 × 16 列
+      // 砖块初始化：difficulty * 4 + 10 行 × 15 列
+      // 原版 16 列 × 64px = 1024px，超出 1000px 窗口导致最右一列只显示一半；
+      // 网页版改为 15 列（15×64=960px）并水平居中，保证每块砖整块显示。
       const brickImage = deps.images.bricks[difficulty];
+      const brickColumns = 15;
+      const brickOffsetX = Math.floor((WIDTH - brickColumns * brickImage.width) / 2);
       bricksVector = [];
       for (let i = 0; i < difficulty * 4 + 10; i++) {
         const row = [];
-        for (let j = 0; j < 16; j++) {
+        for (let j = 0; j < brickColumns; j++) {
           row.push(new Sprites.Brick(
-            j * brickImage.width,
+            brickOffsetX + j * brickImage.width,
             SCORE_TEXT_HEIGHT + i * brickImage.height,
             brickImage.width,
             brickImage.height,

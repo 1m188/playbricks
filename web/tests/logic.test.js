@@ -257,11 +257,12 @@ test('init(0) 简单难度：挡板/球/砖块初始值与 C++ 公式一致', ()
   assert.strictEqual(ball.getIsMoving(), false);
   const bricks = game.getBricks();
   assert.strictEqual(bricks.length, 10); // 0*4+10 行
-  assert.strictEqual(bricks[0].length, 16);
-  assert.strictEqual(bricks[0][0].getX(), 0);
+  assert.strictEqual(bricks[0].length, 15); // 15 列（原版 16 列×64=1024 超出窗口，最右半块；网页版改 15 列整块显示）
+  assert.strictEqual(bricks[0][0].getX(), 20); // (1000 - 15*64) / 2 水平居中
   assert.strictEqual(bricks[0][0].getY(), 20); // scoreTextHeight
-  assert.strictEqual(bricks[9][15].getX(), 960);
-  assert.strictEqual(bricks[9][15].getY(), 308); // 20 + 9*32
+  assert.strictEqual(bricks[9][14].getX(), 916); // 20 + 14*64
+  assert.strictEqual(bricks[9][14].getY(), 308); // 20 + 9*32
+  assert.ok(bricks[0][14].getX() + 64 <= 1000); // 最右一列完整落在窗口内
   assert.strictEqual(bricks[0][0].image, fakeImages.bricks[0]); // 简单=绿
   assert.ok(directorCalls.includes('scene-game'));
   assert.strictEqual(game.isRunning(), true);
@@ -384,11 +385,12 @@ test('球撞砖块：砖块标记、得分 += 难度+1、dy 反向', () => {
   const { game } = makeGame();
   game.init(0);
   const ball = game.getBall();
-  ball.setX(0); ball.setY(44); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
+  // 本帧先移动到 (28,45)，从下方顶到砖块（砖块区居中，[0][0] 起始于 x=20）
+  ball.setX(28); ball.setY(40); ball.setDx(0); ball.setDy(5); ball.setIsMoving(true);
   game.gameCycle();
   assert.strictEqual(game.getBricks()[0][0].getIsCollided(), true);
   assert.strictEqual(game.getScore(), 1); // 难度 0 → +1
-  assert.strictEqual(ball.getDy(), -5); // overWidth=16 > overHeight=3
+  assert.strictEqual(ball.getDy(), -5); // overWidth=16 > overHeight=7 → 翻 dy
 });
 
 test('每帧最多判定一块砖（对应 goto outside）', () => {
@@ -396,13 +398,14 @@ test('每帧最多判定一块砖（对应 goto outside）', () => {
   const { game } = makeGame();
   game.init(0);
   const ball = game.getBall();
-  // 先移动后判定（与 C++ gameCycle 顺序一致）：本帧移动后球位于 (60,45)，同时压住 [0][0] 和 [0][1]
-  ball.setX(55); ball.setY(40); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
+  // 先移动后判定（与 C++ gameCycle 顺序一致）：本帧移动后球位于 (76,45)，同时压住 [0][0] 和 [0][1]
+  ball.setX(71); ball.setY(40); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
   game.gameCycle();
   assert.strictEqual(game.getBricks()[0][0].getIsCollided(), true); // 行优先先判到 [0][0]
   assert.strictEqual(game.getBricks()[0][1].getIsCollided(), false);
   assert.strictEqual(game.getScore(), 1);
-  assert.strictEqual(ball.getDx(), -5); // 对 [0][0]：overWidth=4 < overHeight=7 → 翻 dx
+  assert.strictEqual(ball.getDy(), -5); // 对 [0][0]：overWidth=8 > overHeight=7 → 翻 dy
+  assert.strictEqual(ball.getDx(), 5);  // dx 保持不变
 });
 
 test('球落地：停止循环并回调 onGameOver（非纪录）', () => {
@@ -422,7 +425,7 @@ test('球落地破纪录：先写入最高分，再回调 onGameOver(isNewRecord
   const { game, events } = makeGame();
   game.init(1); // 每块 +2
   const ball = game.getBall();
-  ball.setX(0); ball.setY(44); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
+  ball.setX(28); ball.setY(40); ball.setDx(0); ball.setDy(5); ball.setIsMoving(true);
   game.gameCycle();
   assert.strictEqual(game.getScore(), 2);
   ball.setX(500); ball.setY(930); ball.setDx(0); ball.setDy(5);
@@ -437,7 +440,7 @@ test('再来一局（resetRound(false)）：分数清零，砖块恢复，球回
   const { game } = makeGame();
   game.init(0);
   const ball = game.getBall();
-  ball.setX(0); ball.setY(44); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
+  ball.setX(28); ball.setY(40); ball.setDx(0); ball.setDy(5); ball.setIsMoving(true);
   game.gameCycle(); // 得 1 分
   assert.strictEqual(game.getScore(), 1);
   game.resetRound(false);
@@ -457,7 +460,7 @@ test('砖块全部打完：分数保留累加，重置后继续（清关续玩�
   const { game } = makeGame();
   game.init(0);
   const ball = game.getBall();
-  ball.setX(0); ball.setY(44); ball.setDx(5); ball.setDy(5); ball.setIsMoving(true);
+  ball.setX(28); ball.setY(40); ball.setDx(0); ball.setDy(5); ball.setIsMoving(true);
   game.gameCycle(); // 打掉第一块，得 1 分
   assert.strictEqual(game.getScore(), 1);
   // 手动标记其余砖块为已打
